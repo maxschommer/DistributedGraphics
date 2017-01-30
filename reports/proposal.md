@@ -18,7 +18,6 @@
    To enable ray tracing requires some advanced knowledge in linear algebra, which might be a roadblock for us to implement in C (since simple arrays aren’t optimized for linear algebra). We have gone through an introduction to ray tracing algorithms to help us understand different techniques. We will try to implement these algorithms in C for this project. 
 
    After achieving ray tracing in basic C programming, we will also seek to optimize the program by using GPU through parallel programming. However, it has been hard for us to compile and run CUDA programs on our laptop, so making sure each of us has CUDA/OpenCL working on our GPU and diving into parallel programming might also be a problem reaching our stretch goal.
-```
 
 ## Resources
 1. [Introduction to Ray Tracing](https://www.scratchapixel.com/lessons/3d-basic-rendering/introduction-to-ray-tracing/implementing-the-raytracing-algorithm)
