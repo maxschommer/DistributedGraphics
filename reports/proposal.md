@@ -5,8 +5,8 @@
 ## Project Goal
 
 ## Product Backlog
-⋅⋅* first item
-⋅⋅* second item
+* first item
+* second item
 
 ## Potential Roadblocks
 
