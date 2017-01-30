@@ -12,9 +12,11 @@
 
 ## Resources
 1. First Resource
+
 ⋅⋅⋅ annotated bib
 
 2. Second Resource
+
 ⋅⋅⋅ annotated bib, etc.
 
 Your project proposal should:
