@@ -3,22 +3,21 @@
 ###### Bill Du, Jeremy Garcia, Max Schommer, and Rachel Yang
 
 ## Project Goal
-```We desire to create a rendering environment using C. We will implement a version of ray tracing using copious amounts of linear algebra and the power of STLs, and create beautiful images of spheres, bunnies, teapots and other objects. 
-```
+   We desire to create a rendering environment using C. We will implement a version of ray tracing using copious amounts of linear algebra and the power of STLs, and create beautiful images of spheres, bunnies, teapots and other objects. 
 
-```At a minimum, we desire to implement ray tracing for a triangle or sphere, and output a grayscale image of the triangle or sphere. This will require detecting where the ray intersects the plane of triangle, calculating whether the intersected ray is contained within the triangle, and calculating the light source of the ray. 
-```
 
-```For a stretch goal, we want to implement volume rendering using either OpenCL or CUDA. We would also like to implement color rendering, full STL rendering, and custom environments.
-```
+   At a minimum, we desire to implement ray tracing for a triangle or sphere, and output a grayscale image of the triangle or sphere. This will require detecting where the ray intersects the plane of triangle, calculating whether the intersected ray is contained within the triangle, and calculating the light source of the ray. 
+
+
+   For a stretch goal, we want to implement volume rendering using either OpenCL or CUDA. We would also like to implement color rendering, full STL rendering, and custom environments.
+
 ## Product Backlog
 [Trello Board](https://trello.com/b/5pgqGMIn/softsys17-terminally-eel)
 
 ## Potential Roadblocks
-```To enable ray tracing requires some advanced knowledge in linear algebra, which might be a roadblock for us to implement in C (since simple arrays aren’t optimized for linear algebra). We have gone through an introduction to ray tracing algorithms to help us understand different techniques. We will try to implement these algorithms in C for this project. 
-```
-```	
-After achieving ray tracing in basic C programming, we will also seek to optimize the program by using GPU through parallel programming. However, it has been hard for us to compile and run CUDA programs on our laptop, so making sure each of us has CUDA/OpenCL working on our GPU and diving into parallel programming might also be a problem reaching our stretch goal.
+   To enable ray tracing requires some advanced knowledge in linear algebra, which might be a roadblock for us to implement in C (since simple arrays aren’t optimized for linear algebra). We have gone through an introduction to ray tracing algorithms to help us understand different techniques. We will try to implement these algorithms in C for this project. 
+
+   After achieving ray tracing in basic C programming, we will also seek to optimize the program by using GPU through parallel programming. However, it has been hard for us to compile and run CUDA programs on our laptop, so making sure each of us has CUDA/OpenCL working on our GPU and diving into parallel programming might also be a problem reaching our stretch goal.
 ```
 
 ## Resources
@@ -34,16 +33,3 @@ After achieving ray tracing in basic C programming, we will also seek to optimiz
 
     This resource also touches on ray-tracing by exploring the basics of geometric rendering in 3d programs. It focuses on rendering triangles, providing details on the geometry of triangles and how to detect intersection points between the ray and the triangle. It progresses into how optimizing Barycentric coordinates helps render the object’s shading and how the Moller-Trumbore algorithm optimizes ray-triangle intersection.
 
-Your project proposal should:
-
-1) State the goal of your project, ideally including a lower bound you are confident you can achieve and a stretch goal that is more ambitious.
-
-2) Demonstrate that you have acquired the knowledge you need to get started.  We will know that you have this knowledge if the text of the proposal uses domain language effectively to convey ideas clearly and concisely.
-
-3) Demonstrate that you have assembled the resources you need to get started.  One good way to do that is to include an annotated bibliography with a pointer to each resource and a few sentences that describe the content.
-
-4) Present a product backlog for the next two sprints that represents a concrete plan that will keep the entire team productively engaged (this can be a link to your Trello board).  Each item in the product backlog should represent a good sized unit of work, and have an appropriate definition of done.
-
- 5) Enumerate potential roadblocks and ways instructors can help.  Do you need materials?  Do you have show-stopping questions you have not been able to answer?
-
-Your primary audience is the instructors, but you should include enough background information that another student in the class could read and understand it.
