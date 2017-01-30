@@ -1,6 +1,7 @@
 
 # Project I Proposal: Terminally Eel
 ###### Bill Du, Jeremy Garcia, Max Schommer, and Rachel Yang
+###### January 30, 2016
 
 ## Project Goal
    We desire to create a rendering environment using C. We will implement a version of ray tracing using copious amounts of linear algebra and the power of STLs, and create beautiful images of spheres, bunnies, teapots and other objects. 
