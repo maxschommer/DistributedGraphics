@@ -10,7 +10,7 @@
    At a minimum, we desire to implement ray tracing for a triangle or sphere, and output a grayscale image of the triangle or sphere. This will require detecting where the ray intersects the plane of triangle, calculating whether the intersected ray is contained within the triangle, and calculating the light source of the ray. 
 
 
-   For a stretch goal, we want to implement volume rendering using either OpenCL or CUDA. We would also like to implement color rendering, full STL rendering, and custom environments.
+   For a stretch goal, we want to implement volume rendering using either OpenCL or CUDA. We would also like to implement color rendering, full STL rendering, and custom environments. We would like to implement full video capability, allowing turntable renders and camera path linear and possibly polynomial interpolation.
 
 ## Product Backlog
 [Trello Board](https://trello.com/b/5pgqGMIn/softsys17-terminally-eel)
