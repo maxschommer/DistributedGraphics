@@ -1,3 +1,18 @@
+
+# Project I Proposal: Terminally Eel
+###### Bill Du, Jeremy Garcia, Max Schommer, and Rachel Yang
+
+## Project Goal
+
+## Product Backlog
+⋅⋅* first item
+⋅⋅* second item
+
+## Potential Roadblocks
+
+## Resources
+
+
 Your project proposal should:
 
 1) State the goal of your project, ideally including a lower bound you are confident you can achieve and a stretch goal that is more ambitious.
