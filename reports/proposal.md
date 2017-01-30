@@ -3,19 +3,23 @@
 ###### Bill Du, Jeremy Garcia, Max Schommer, and Rachel Yang
 
 ## Project Goal
-We desire to create a rendering environment using C. We will implement a version of ray tracing using copious amounts of linear algebra and the power of STLs, and create beautiful images of spheres, bunnies, teapots and other objects. 
+```We desire to create a rendering environment using C. We will implement a version of ray tracing using copious amounts of linear algebra and the power of STLs, and create beautiful images of spheres, bunnies, teapots and other objects. 
+```
 
-At a minimum, we desire to implement ray tracing for a triangle or sphere, and output a grayscale image of the triangle or sphere. This will require detecting where the ray intersects the plane of triangle, calculating whether the intersected ray is contained within the triangle, and calculating the light source of the ray. 
+```At a minimum, we desire to implement ray tracing for a triangle or sphere, and output a grayscale image of the triangle or sphere. This will require detecting where the ray intersects the plane of triangle, calculating whether the intersected ray is contained within the triangle, and calculating the light source of the ray. 
+```
 
-For a stretch goal, we want to implement volume rendering using either OpenCL or CUDA. We would also like to implement color rendering, full STL rendering, and custom environments.
-
+```For a stretch goal, we want to implement volume rendering using either OpenCL or CUDA. We would also like to implement color rendering, full STL rendering, and custom environments.
+```
 ## Product Backlog
 [Trello Board](https://trello.com/b/5pgqGMIn/softsys17-terminally-eel)
 
 ## Potential Roadblocks
-To enable ray tracing requires some advanced knowledge in linear algebra, which might be a roadblock for us to implement in C (since simple arrays aren’t optimized for linear algebra). We have gone through an introduction to ray tracing algorithms to help us understand different techniques. We will try to implement these algorithms in C for this project. 
-	
+```To enable ray tracing requires some advanced knowledge in linear algebra, which might be a roadblock for us to implement in C (since simple arrays aren’t optimized for linear algebra). We have gone through an introduction to ray tracing algorithms to help us understand different techniques. We will try to implement these algorithms in C for this project. 
+```
+```	
 After achieving ray tracing in basic C programming, we will also seek to optimize the program by using GPU through parallel programming. However, it has been hard for us to compile and run CUDA programs on our laptop, so making sure each of us has CUDA/OpenCL working on our GPU and diving into parallel programming might also be a problem reaching our stretch goal.
+```
 
 ## Resources
 1. [Introduction to Ray Tracing](https://www.scratchapixel.com/lessons/3d-basic-rendering/introduction-to-ray-tracing/implementing-the-raytracing-algorithm)
