@@ -2,6 +2,8 @@
 gcc -Wall display_image.c -o img `pkg-config --cflags gtk+-2.0` `pkg-config --libs gtk+-2.0`
 Run by following the ./img with the image file that you
 want to display.
+
+Exmple: $./img dog.bmp
 */
 
 #include <gtk/gtk.h>

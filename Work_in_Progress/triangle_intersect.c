@@ -1,24 +1,23 @@
+/*Computes the location of the intersection between 
+a ray and a triangle*/
+
 #include <stdio.h>
 #include <stdbool.h>
 #include "../main.h"
 
 //REMINDER: Use Fast inverse square root
 
-/*We define v1 as p3-p1, and v2 as p2-p1. We
-take the cross product of these (v1 x v2) and normalize
-in order to find the unit normal.*/
-vector triangleNormal(triangle *tri){
-    vector v1 = vecSub(&tri->p3, &tri->p1);
-    vector v2 = vecSub(&tri->p2, &tri->p1);
-    vector cross = crossProduct(&v1, &v2);
-    vector result = vecNorm(&cross);
-    return result;
+/*Calculates the point of intersection between the ray 
+and the plane of the triangle*/
+vector triangleIntersect(triangle *tri, ray *r){
+    vector triNormal = triangleNormal(&tri);  
 }
+
 
 int main()
 {
     triangle t;
-    t.p1.x = 3; //Triangle is parrell to the yz plane, and is isoceles.
+    t.p1.x = 3; //Triangle is parallel to the yz plane, and is isoceles.
     t.p1.y = 3;
     t.p1.z = 0;
 
