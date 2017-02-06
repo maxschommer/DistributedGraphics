@@ -1,3 +1,9 @@
+/*Compile using the following command line arguments
+gcc -Wall display_image.c -o img `pkg-config --cflags gtk+-2.0` `pkg-config --libs gtk+-2.0`
+Run by following the ./img with the image file that you
+want to display.
+*/
+
 #include <gtk/gtk.h>
 
 void destroy(void) {
