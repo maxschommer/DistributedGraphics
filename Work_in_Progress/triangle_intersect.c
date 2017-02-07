@@ -3,6 +3,7 @@ a ray and a triangle*/
 
 #include <stdio.h>
 #include <stdbool.h>
+#include "../main.h"
 
 typedef struct{
     float x,y,z;
