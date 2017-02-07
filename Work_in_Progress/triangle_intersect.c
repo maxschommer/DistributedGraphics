@@ -4,8 +4,6 @@ a ray and a triangle*/
 #include <stdio.h>
 #include <stdbool.h>
 
-//REMINDER: Use Fast inverse square root
-
 typedef struct{
     float x,y,z;
 }vector;
@@ -46,6 +44,19 @@ float dotProduct(vector *v1, vector *v2){
     return v1->x * v2->x + v1->y * v2->y + v1->z * v2->z;
 }
 
+float det2x2(float *a, float *b, float *c, float *d){
+    float result = (*a)*(*d)-(*c)*(*b); //Dereference the pointers.
+    return result;
+}
+
+float det3x3(triangle *Mat){
+    float det = 
+        Mat->p1.x*(det2x2(&Mat->p2.y, &Mat->p2.z, &Mat->p3.y, &Mat->p3.z))-
+        Mat->p1.y*(det2x2(&Mat->p2.x, &Mat->p2.z, &Mat->p3.x, &Mat->p3.z)) + 
+        Mat->p1.z*(det2x2(&Mat->p2.x, &Mat->p2.y, &Mat->p3.x, &Mat->p3.y));
+    return det;
+}
+
 /*This subtracts vector 2 from vector 1. Ex. v1-v2 */
 vector vecSub(vector *v1, vector* v2){
     vector result = {v1->x - v2->x, v1->y - v2->y, v1->z - v2->z};
@@ -83,10 +94,35 @@ vector triangleNormal(triangle *tri){
     return result;
 }
 
+
+/*Uses a triangle as a three by three matrix, 
+where the rows are p1, p2, and p3. The collumns
+are x, y, z. */
+triangle matInv(triangle *A){
+    float aDet = det3x3(A);
+
+    triangle B;
+
+    B.p1.x = det2x2(&A->p2.y, &A->p2.z, &A->p3.y, &A->p3.z)/aDet;
+    B.p1.y = det2x2(&A->p1.z, &A->p1.y, &A->p3.z, &A->p3.y)/aDet;
+    B.p1.z = det2x2(&A->p1.y, &A->p1.z, &A->p2.y, &A->p2.z)/aDet;
+
+    B.p2.x = det2x2(&A->p2.z, &A->p2.x, &A->p3.z, &A->p3.x)/aDet;
+    B.p2.y = det2x2(&A->p1.x, &A->p1.z, &A->p3.x, &A->p3.z)/aDet;
+    B.p2.z = det2x2(&A->p1.z, &A->p1.x, &A->p2.z, &A->p2.x)/aDet;
+
+    B.p3.x = det2x2(&A->p2.x, &A->p2.y, &A->p3.x, &A->p3.y)/aDet;
+    B.p3.y = det2x2(&A->p1.y, &A->p1.x, &A->p3.y, &A->p3.x)/aDet;
+    B.p3.z = det2x2(&A->p1.x, &A->p1.y, &A->p2.x, &A->p2.y)/aDet;
+
+    return B;
+
+}
+
 /*Calculates the point of intersection between the ray 
 and the plane of the triangle*/
 vector triangleIntersect(triangle *tri, ray *r){
-    vector triNormal = triangleNormal(&tri);  
+    vector triNormal = triangleNormal(tri);
 }
 
 
@@ -107,6 +143,10 @@ int main()
 
     vector cross = crossProduct(&t.p1, &t.p2);
     vector norm = triangleNormal(&t);
+    triangle inv = matInv(&t);
     printf("%f, %f, %f\n", norm.x, norm.y, norm.z); //The modified vR is the cross product
+    printf("|%.3f %.3f %.3f|\n|%.3f %.3f %.3f|\n|%.3f %.3f %.3f|\n", inv.p1.x, inv.p1.y, inv.p1.z, inv.p2.x, inv.p2.y, inv.p2.z, inv.p3.x, inv.p3.y, inv.p3.z);
+
+    printf("%f", det3x3(&t));
     
 }
