@@ -42,3 +42,11 @@
 4. [Ray Tracing Tutorials](http://www.purplealienplanet.com/node/23)
 
     This resource is a series of tutorials on how to ray trace in C. It contains various levels of implementation, from simple boolean return functions to full color rendering. We read through this resource in order to see how ray tracing worked, and then stopped looking at it so that we could develop our own method of ray tracing that doesn’t rely on other’s code.
+    
+5. [Intersection Formulas](https://en.wikipedia.org/wiki/Line%E2%80%93plane_intersection)
+
+    Here is where we got the formulas to determine where a line and a plane intersect. We initially used the matrix solution, which required a matrix inverse, but later simplified to a faster solution that simply meant solving for a single variable (instead of t, u, and v). 
+    
+6. [Ray Reflection](https://graphics.stanford.edu/courses/cs148-10-summer/docs/2006--degreve--reflection_refraction.pdf)
+
+    This is a graphics paper that describes in depth methods for solving the reflection of a ray. It also describes refraction, which will be useful if we want to solve for transparent or translucent objects. 
