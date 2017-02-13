@@ -3,8 +3,8 @@ a ray and a triangle*/
 
 #include <stdio.h>
 #include <stdbool.h>
-#include "../main.h"
-
+/*#include "../main.h"
+*/
 typedef struct{
     float x,y,z;
 }vector;
@@ -58,11 +58,24 @@ float det3x3(triangle *Mat){
     return det;
 }
 
-/*This subtracts vector 2 from vector 1. Ex. v1-v2 */
-vector vecSub(vector *v1, vector* v2){
+//This subtracts vector 2 from vector 1. Ex. v1-v2 
+vector vecSub(vector *v1, vector *v2){
     vector result = {v1->x - v2->x, v1->y - v2->y, v1->z - v2->z};
     return result;
 }
+
+//This subtracts vector 2 from vector 1. Ex. v1-v2 
+vector vecSum(vector *v1, vector *v2){
+    vector result = {v1->x + v2->x, v1->y + v2->y, v1->z + v2->z};
+    return result;
+}
+
+/*Scales a vector by a constant*/
+vector vecScale(vector *v, float *d){
+	vector result = {(v->x )* *d, (v->y) * *d, (v->z) * *d};
+	return result;
+}
+
 
 /*Returns the unit vector of a vector input.*/
 vector vecNorm(vector *v){
@@ -73,6 +86,7 @@ vector vecNorm(vector *v){
 
 /*Returns the crosproduct u x v for two vectors
 u and v.*/
+//TODO
 vector crossProduct(vector *u, vector *v){
     vector result;
     result.x = u->y * v->z - u->z * v->y;
@@ -123,9 +137,19 @@ triangle matInv(triangle *A){
 /*Calculates the point of intersection between the ray 
 and the plane of the triangle*/
 vector triangleIntersect(triangle *tri, ray *r){
-    vector triNormal = triangleNormal(tri);
+    /*Formula is (a . n)/(r . n)*/
+    vector n = triangleNormal(tri);
+    vector a = vecSub(&tri->p1, &r->start);
+    float d = dotProduct(&a, &n)/dotProduct(&r->dir, &n);
+    vector v1 = vecScale(&r->dir, &d);
+    vector v2 = r->start;
+    vector result = vecSum(&v1, &v2);
+    return result;
 }
 
+bool inTri(triangle *t, vector *p){
+
+}
 
 int main()
 {
@@ -142,12 +166,24 @@ int main()
     t.p3.y = 0;
     t.p3.z = 3;
 
+    ray r;
+    r.start.x = 0;
+    r.start.y = 0;
+    r.start.z = 0;
+
+    r.dir.x = 6;
+    r.dir.y = 7.25;
+    r.dir.z = 2;
+
     vector cross = crossProduct(&t.p1, &t.p2);
     vector norm = triangleNormal(&t);
     triangle inv = matInv(&t);
+
+    vector intersect = triangleIntersect(&t, &r);
+
     printf("%f, %f, %f\n", norm.x, norm.y, norm.z); //The modified vR is the cross product
     printf("|%.3f %.3f %.3f|\n|%.3f %.3f %.3f|\n|%.3f %.3f %.3f|\n", inv.p1.x, inv.p1.y, inv.p1.z, inv.p2.x, inv.p2.y, inv.p2.z, inv.p3.x, inv.p3.y, inv.p3.z);
 
-    printf("%f", det3x3(&t));
-    
+    printf("%f\n", det3x3(&t));
+    printf("(%f, %f, %f\n)", intersect.x, intersect.y, intersect.z);
 }
