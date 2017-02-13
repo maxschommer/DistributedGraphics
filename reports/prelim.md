@@ -17,6 +17,11 @@
    Within this Trello board, on the right side, lies our Sprint 1 and Sprint 2 "Done" cards. For many of the Sprint 1 completed cards, we don't have physical evidence for because it was done on an individual basis and, because it was more for cursory research, we didn't save the articles we studied. However, for Sprint 2, we did much better in terms of documentation, and by looking at the comments in each card, we should have links to code or articles that show physical evidence confirming that we did, in fact, complete these cards.
 
 ## Preliminary Results
+Sphere Render:
+![alt text](https://github.com/maxschommer/SoftSys-Terminally-Eel/blob/master/reports/images/image.ppm)
+
+Triangle Render:
+![alt text](https://github.com/maxschommer/SoftSys-Terminally-Eel/blob/master/reports/images/SoftSystrianglerender.png)
 
 ## Potential Roadblocks
  
