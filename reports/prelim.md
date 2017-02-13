@@ -18,7 +18,7 @@
 
 ## Preliminary Results
 Sphere Render:
-![alt text](https://github.com/maxschommer/SoftSys-Terminally-Eel/blob/master/reports/images/image.ppm)
+![alt text](https://github.com/maxschommer/SoftSys-Terminally-Eel/blob/master/reports/images/SoftSysSphereRender.png)
 
 Triangle Render:
 ![alt text](https://github.com/maxschommer/SoftSys-Terminally-Eel/blob/master/reports/images/SoftSystrianglerender.png)
@@ -55,3 +55,7 @@ Triangle Render:
 6. [Ray Reflection](https://graphics.stanford.edu/courses/cs148-10-summer/docs/2006--degreve--reflection_refraction.pdf)
 
     This is a graphics paper that describes in depth methods for solving the reflection of a ray. It also describes refraction, which will be useful if we want to solve for transparent or translucent objects. 
+    
+7. [Inverse Square Root](https://en.wikipedia.org/wiki/Fast_inverse_square_root)
+
+    This describes the fast inverse square root function used in Quake to render graphics. It is some crazy cool stuff, and we just had to include it in our code. 
