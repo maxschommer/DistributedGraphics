@@ -204,14 +204,14 @@ int main()
 
     ray r;
     r.start.x = 0;
-    r.start.y = 0;
-    r.start.z = 0;
+    /*r.start.y = 0;
+    r.start.z = 0;*/
 
-    r.dir.x = 6;
+    r.dir.x = 1;
     r.dir.y = 0;
-    r.dir.z = 2;
+    r.dir.z = 0;
 
-    vector cross = crossProduct(&t.p1, &t.p2);
+    /*vector cross = crossProduct(&t.p1, &t.p2);
     vector norm = triangleNormal(&t);
     triangle inv = matInv(&t);
 
@@ -223,5 +223,25 @@ int main()
 
     printf("%f\n", det3x3(&t));
     printf("(%f, %f, %f\n)", intersect.x, intersect.y, intersect.z);
-    printf("%d\n", inside);
+    printf("%d\n", inside);*/
+
+    int y,z;
+    bool inside;
+
+    for (y=-10;y<10;y++){
+        r.start.y=y;
+        printf("\n");
+        for (z=-10; z<10;z++){
+            r.start.z = z;
+            vector intersect = triangleIntersect(&t, &r);
+            inside = inTri(&t,&intersect);
+            if (inside){
+                printf("++");
+            }else{
+                printf("--");
+            };
+        }
+    }
+
+    return 0;
 }
