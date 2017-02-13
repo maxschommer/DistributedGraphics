@@ -21,6 +21,7 @@ Sphere Render:
 ![alt text](https://github.com/maxschommer/SoftSys-Terminally-Eel/blob/master/reports/images/SoftSysSphereRender.png)
 
 Triangle Render:
+
 ![alt text](https://github.com/maxschommer/SoftSys-Terminally-Eel/blob/master/reports/images/SoftSystrianglerender.png)
 
 ## Potential Roadblocks
