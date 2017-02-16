@@ -18,11 +18,12 @@ typedef struct{
 typedef struct{
     vector start;
     vector dir;
+    float reflectance;
 }ray;
 
 /*This is a fast inverse square root function.
 I did not write it, and barely comprehend it.*/
-float Q_rsqrt( float number )
+float Q_rsqrt(float number )
 {
     long i;
     float x2, y;
@@ -172,20 +173,30 @@ bool inTri(triangle *t, vector *p){
 
 	// determine if given point lies above
 	// or below plane defined by triangle
-	float dv1 = dotProduct(&v1, &fplane1);
-	float dv2 = dotProduct(&v2, &fplane2);
-	float dv3 = dotProduct(&v3, &fplane3);
+	float dv1 = dotProduct(&cv1, &fplane1);
+	float dv2 = dotProduct(&cv2, &fplane2);
+	float dv3 = dotProduct(&cv3, &fplane3);
 
 	// if all three have positive directions
 	// point does lies within inside triangle
 	// and so returns true (which returns 1)
-	if ((dv1 < 0) && (dv2 < 0) && (dv3 < 0)) {
+	if ((dv1 >= 0) && (dv2 >= 0) && (dv3 >= 0)) {
 		return true;
 	}
 	else {
 		return false;
 	}
 }
+/*Returns a vector in the direction of the reflected
+ray given by the normal of the surface and the initial
+ray.*/
+vector reflectedRay(ray *d, vector *n){
+	float dn = 2*(dotProduct(&d->dir, n));
+	vector c = vecScale(n, &dn);
+	vector r = vecSub(&d->dir, &c);
+	return r;
+}
+
 
 int main()
 {
@@ -200,14 +211,14 @@ int main()
     
     t.p3.x = 3;
     t.p3.y = 0;
-    t.p3.z = 3;
+    t.p3.z = 6;
 
     ray r;
     r.start.x = 0;
-    /*r.start.y = 0;
-    r.start.z = 0;*/
+    r.start.y = 0;
+    r.start.z = 0;
 
-    r.dir.x = 1;
+    r.dir.x = 4;
     r.dir.y = 0;
     r.dir.z = 0;
 
@@ -228,20 +239,31 @@ int main()
     int y,z;
     bool inside;
 
-    for (y=-10;y<10;y++){
-        r.start.y=y;
+    for (z=10;z>-11;z--){
+        r.dir.z=z;
         printf("\n");
-        for (z=-10; z<10;z++){
-            r.start.z = z;
+        for (y=-10; y<11;y++){
+            r.dir.y = y;
             vector intersect = triangleIntersect(&t, &r);
             inside = inTri(&t,&intersect);
             if (inside){
                 printf("++");
             }else{
                 printf("--");
-            };
+            }
         }
     }
+    r.start.x = 0;
+    r.start.y = 0;
+    r.start.z = 0;
 
+    r.dir.x = 4;
+    r.dir.y = 0;
+    r.dir.z = 0;
+    vector norm = triangleNormal(&t);
+    vector Ref = reflectedRay(&r, &norm);
+    printf("\nNormal:      \n%f, %f, %f\n", norm.x, norm.y, norm.z);
+    printf("Unreflected: \n%f, %f, %f\n", r.dir.x, r.dir.y, r.dir.z);
+    printf("Reflected:   \n%f, %f, %f\n", Ref.x, Ref.y, Ref.z);
     return 0;
 }

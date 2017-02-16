@@ -17,6 +17,12 @@
    Within this Trello board, on the right side, lies our Sprint 1 and Sprint 2 "Done" cards. For many of the Sprint 1 completed cards, we don't have physical evidence for because it was done on an individual basis and, because it was more for cursory research, we didn't save the articles we studied. However, for Sprint 2, we did much better in terms of documentation, and by looking at the comments in each card, we should have links to code or articles that show physical evidence confirming that we did, in fact, complete these cards.
 
 ## Preliminary Results
+Sphere Render:
+![alt text](https://github.com/maxschommer/SoftSys-Terminally-Eel/blob/master/reports/images/SoftSysSphereRender.png)
+
+Triangle Render:
+
+![alt text](https://github.com/maxschommer/SoftSys-Terminally-Eel/blob/master/reports/images/SoftSystrianglerender.png)
 
 ## Potential Roadblocks
  
@@ -50,3 +56,7 @@
 6. [Ray Reflection](https://graphics.stanford.edu/courses/cs148-10-summer/docs/2006--degreve--reflection_refraction.pdf)
 
     This is a graphics paper that describes in depth methods for solving the reflection of a ray. It also describes refraction, which will be useful if we want to solve for transparent or translucent objects. 
+    
+7. [Inverse Square Root](https://en.wikipedia.org/wiki/Fast_inverse_square_root)
+
+    This describes the fast inverse square root function used in Quake to render graphics. It is some crazy cool stuff, and we just had to include it in our code. 
