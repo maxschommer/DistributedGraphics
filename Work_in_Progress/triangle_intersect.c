@@ -19,12 +19,11 @@ typedef struct{
     vector start;
     vector dir;
     float reflectance;
-    float 
 }ray;
 
 /*This is a fast inverse square root function.
 I did not write it, and barely comprehend it.*/
-float Q_rsqrt( float number )
+float Q_rsqrt(float number )
 {
     long i;
     float x2, y;
