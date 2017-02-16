@@ -18,7 +18,8 @@ typedef struct{
 typedef struct{
     vector start;
     vector dir;
-    float refract;
+    float reflectance;
+    float 
 }ray;
 
 /*This is a fast inverse square root function.
