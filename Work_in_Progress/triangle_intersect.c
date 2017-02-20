@@ -252,10 +252,13 @@ ray reflectedRay(ray *d, vector *n, vector *p){
 }
 
 /*This function accumulates the light gathered
-from all of the light sources. Currently,
-it just does this for one light source. It needs
+from all of the light sources.
+It takes in a point, which is the point of intersection
+between the ray and the triangle, and the normal of 
+the triangle.
+Currently, it just does this for one light source. It needs
 to be able to loop.*/
-float AccLightSource(vector *q){
+float AccLightSource(vector *q, vector *n){
 	float ia = .1; //This needs to become global
 	float color = ia;
 	//For loop goes here, to do all light sources
@@ -301,11 +304,10 @@ float Trace(ray *r, int depth){
 	}
 
 	hit_tri q = Intersect(r);
-	//printf("\nq = %f, %f, %f, %d\n", q.point.x, q.point.y,q.point.z, q.FLAG);
-
+	
 	
 	if (q.FLAG==0){
-		//printf("Target Hit!");
+		
 		return ia;
 	}
 	//This is the color of the pixel in intensity  for one 
@@ -314,7 +316,7 @@ float Trace(ray *r, int depth){
 
 
 
-	color = -AccLightSource(&q.point);
+	color = -AccLightSource(&q.point, &n);
 	//printf("color = :%f\n", color);
 	//Reflection and refraction recursion starts here
 	return color;
