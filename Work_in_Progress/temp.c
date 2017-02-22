@@ -4,8 +4,8 @@ a ray and a triangle*/
 #include <stdio.h>
 #include <stdbool.h>
 #include <math.h>
-#define WIDTH 800
-#define HEIGHT 500
+#define WIDTH 80
+#define HEIGHT 50
 /*#include "../main.h"
 */
 
@@ -264,7 +264,8 @@ float AccLightSource(vector *q){
 	r.dir = vecSub(&light.point, q);
 
 	hit_tri w = Intersect(&r);
-    printf("Wflag %d\n",w.FLAG );
+    printf("wFLAG = %d \n", w.FLAG);
+    //printf("Wflag %d\n",w.FLAG );
 	//This checks if the ray intersects
 	//something before hitting a light source.
 	//Its not reliable, and should be improved
@@ -280,13 +281,14 @@ float AccLightSource(vector *q){
 			printf("light_intensity: %f\n", light_intensity);
 		}*/
 		float diff_int = dotProduct(&Lhat, &Nhat) * kd * light_intensity;
-
+        //printf("Diff Int: %f \n", diff_int);
 
 
 
 
 		color += diff_int;
 		//color += specular intensity;*/
+        //printf("color = %f \n", diff_int);
 	//}
 	//End the for loop
 
@@ -295,7 +297,7 @@ float AccLightSource(vector *q){
 
 
 float Trace(ray *r, int depth){
-	float ia; //This needs to become global
+	float ia = .1; //This needs to become global
 	if (depth >4) //Checks if maximum recursion depth is met
 	{
 		return ia;
@@ -315,7 +317,7 @@ float Trace(ray *r, int depth){
 
 
 
-	color = -AccLightSource(&q.point);
+	color = AccLightSource(&q.point);
 	//printf("color = :%f\n", color);
 	//Reflection and refraction recursion starts here
 	return color;
@@ -355,7 +357,7 @@ int main()
 	light.point.x = -1;
 	light.point.y = 0;
 	light.point.z = 0;
-	light.diff_int = 700;
+	light.diff_int = 500;
 
 	tglobal.p1.x = 3; //Triangle is parallel to the yz plane, and is isoceles.
 	tglobal.p1.y = 3;
@@ -393,8 +395,8 @@ int main()
     r.dir.y = 0;
     r.dir.z = 0;
 
-    int y,z,x;
-    int inside;
+    int y,z;
+    //int inside;
 
     for (z=10;z>-11;z--){
         r.dir.z=z;
