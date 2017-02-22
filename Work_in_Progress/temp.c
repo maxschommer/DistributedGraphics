@@ -20,6 +20,7 @@ typedef struct{
     vector p3;
 }triangle;
 
+
 typedef struct{
     vector start;
     vector dir;
@@ -225,7 +226,7 @@ when function is verified to work, and
 the function should act on a global 
 collection of triangles called an object*/
 hit_tri Intersect(ray *r){
-    int inside;
+	//int inside;
 	hit_tri find_intersect = planeIntersect(&tglobal, r);
     if ((find_intersect.FLAG) && (inTri(&tglobal,&find_intersect.point))){
     	find_intersect.FLAG = 1;
@@ -240,9 +241,7 @@ hit_tri Intersect(ray *r){
 
 /*Returns a ray in the direction of the reflected
 ray given by the normal of the surface and the initial
-ray. Takes as input the ray, the normal to the 
-triangle, and a vector that represents the point
-of intersection between the ray and the triangle*/
+ray.*/
 ray reflectedRay(ray *d, vector *n, vector *p){
 	float dn = 2*(dotProduct(&d->dir, n));
 	vector c = vecScale(n, &dn);
@@ -253,67 +252,42 @@ ray reflectedRay(ray *d, vector *n, vector *p){
 }
 
 /*This function accumulates the light gathered
-from all of the light sources.
-It takes in a point, which is the point of intersection
-between the ray and the triangle, and the normal of 
-the triangle, and the vector of the direction of the 
-ray hitting the triangle (used for specular highlights).
-Currently, it just does this for one light source. It needs
+from all of the light sources. Currently,
+it just does this for one light source. It needs
 to be able to loop.*/
-float AccLightSource(vector *q, vector *n, ray *v){
+float AccLightSource(vector *q){
 	float ia = .1; //This needs to become global
 	float color = ia;
-    float gamma = 4;
-    vector buffer; //This is the distance away from the triangle's
-                   //surface that the ray should start so that the intersect
-                   //is correctly calculated without ambiguity. 
-    buffer.x = -v->dir.x*.04;
-    buffer.y = -v->dir.y*.04;
-    buffer.z = -v->dir.z*.04;
-
 	//For loop goes here, to do all light sources
 	ray r;
+	r.start = *q;
+	r.dir = vecSub(&light.point, q);
 
-	r.start = vecSum(q, &buffer);
-	r.dir = vecSub(&light.point, &r.start);
-    r.dir = vecNorm(&r.dir);
-/*    r.dir.x = -r.dir.x;
-    r.dir.y = -r.dir.y;
-    r.dir.z = -r.dir.z;*/
-    //printf("%f, %f, %f\n",v->dir.x, v->dir.y, v->dir.z);;
 	hit_tri w = Intersect(&r);
     printf("Wflag %d\n",w.FLAG );
 	//This checks if the ray intersects
 	//something before hitting a light source.
-	if (w.FLAG == 0)
-	{
+	//Its not reliable, and should be improved
+	//if (w.FLAG == 0)
+	//{
 		float kd = .5; //Diffusion/reflection constant
 		vector Lhat = vecNorm(&r.dir); //Normal of vector from point to 
-								       //light source.
+								//light source.
 		vector Nhat = triangleNormal(&tglobal);//Normal of triangle
-		float light_intensity_diff = 1 / distance(q, &light.point) * light.diff_int; //Use point source light definition
-                                                                                     //for distance dropout
-		float diff_int = dotProduct(&Lhat, &Nhat) * kd * light_intensity_diff; //Diffusion Intensity
+		float light_intensity = 1 / distance(q, &light.point) * light.diff_int;
+		/*if (w.FLAG)
+		{
+			printf("light_intensity: %f\n", light_intensity);
+		}*/
+		float diff_int = dotProduct(&Lhat, &Nhat) * kd * light_intensity;
 
-        float ks = .7;
 
-        ray V = reflectedRay(v, &Nhat, q);//Viewer ray
-        V.dir = vecNorm(&V.dir); 
-        ray R = reflectedRay(&r, &Nhat, q);//Perfectly reflected light ray
-        R.dir = vecNorm(&R.dir);
 
-        v->dir = vecNorm(&v->dir);
-        float RdotV = dotProduct(&v->dir, &R.dir);
-        float light_intensity_spec = 1 / distance(q, &light.point) * light.spec_int; 
-        float spec_int = pow(-RdotV, gamma) * light_intensity_spec * ks;
+
 
 		color += diff_int;
-        //color += -spec_int;
-		//printf("V: %f, %f, %f, and RdotV = %f\n", V.dir.x, V.dir.y, V.dir.z, color);
-        //printf("R: %f, %f, %f, and RdotV = %f\n", r.dir.x, r.dir.y, r.dir.z, RdotV);
-
-
-	}
+		//color += specular intensity;*/
+	//}
 	//End the for loop
 
 	return color;
@@ -328,10 +302,11 @@ float Trace(ray *r, int depth){
 	}
 
 	hit_tri q = Intersect(r);
-	
+	//printf("\nq = %f, %f, %f, %d\n", q.point.x, q.point.y,q.point.z, q.FLAG);
+
 	
 	if (q.FLAG==0){
-		
+		//printf("Target Hit!");
 		return ia;
 	}
 	//This is the color of the pixel in intensity  for one 
@@ -339,11 +314,8 @@ float Trace(ray *r, int depth){
 	float color;
 
 
-    vector n; //Not useful yet
-    n.x = 0;
-    n.y = 0;
-    n.z = 0;
-	color = -AccLightSource(&q.point, &n, r);
+
+	color = -AccLightSource(&q.point);
 	//printf("color = :%f\n", color);
 	//Reflection and refraction recursion starts here
 	return color;
@@ -384,7 +356,6 @@ int main()
 	light.point.y = 0;
 	light.point.z = 0;
 	light.diff_int = 700;
-    light.spec_int = 700;
 
 	tglobal.p1.x = 3; //Triangle is parallel to the yz plane, and is isoceles.
 	tglobal.p1.y = 3;
@@ -403,15 +374,15 @@ int main()
 
     t.p1.x = 3; //Triangle is parallel to the yz plane, and is isoceles.
     t.p1.y = 3;
-    t.p1.z = -2;
+    t.p1.z = 0;
 
     t.p2.x = 3;
     t.p2.y = -3;
-    t.p2.z = -2;
+    t.p2.z = 0;
     
     t.p3.x = 3;
-    t.p3.y = 0;
-    t.p3.z = 4;
+    t.p3.y = -4;
+    t.p3.z = 6;
 
     ray r;
     r.start.x = 0;
@@ -422,14 +393,15 @@ int main()
     r.dir.y = 0;
     r.dir.z = 0;
 
-    int y,z;
+    int y,z,x;
+    int inside;
 
     for (z=10;z>-11;z--){
         r.dir.z=z;
         printf("\n");
         for (y=-10; y<11;y++){
             r.dir.y = y;
-            if (Trace(&r, 0)>20){
+            if (Trace(&r, 0)){
                 printf("++");
             }else{
                 printf("--");
@@ -455,12 +427,8 @@ int main()
             {
             	printf("Trace: %f\n", Trace(&r, 0));
             }*/
-        	float red = Trace(&r, 0);
-            if (red > 255)
-            {
-                red = 255;
-            }
-            img[(WIDTH-y+z*WIDTH)*3 +0] = red;
+        	
+            img[(WIDTH-y+z*WIDTH)*3 +0] = Trace(&r, 0);
             img[(WIDTH-y+z*WIDTH)*3 +1] = 0;
             img[(WIDTH-y+z*WIDTH)*3 +2] = 0;
 
