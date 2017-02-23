@@ -8,7 +8,8 @@ a ray and a triangle*/
 #define HEIGHT 800
 /*#include "../main.h"
 */
-
+//Missing header level comments/ move into a header file
+//explain better structs
 
 typedef struct{
     float x,y,z;
@@ -276,9 +277,6 @@ float AccLightSource(vector *q, ray *v){
 	float color = ia;
     float gamma = 12;
     ray view = *v;
-    // view.dir.x = view.dir.x;
-    // view.dir.x = view.dir.x;
-    // view.dir.x = view.dir.x;
 
     vector buffer; //This is the distance away from the triangle's
                    //surface that the ray should start so that the intersect
@@ -294,13 +292,8 @@ float AccLightSource(vector *q, ray *v){
     r.dir = vecSub(&light.point, &r.start);
     r.dir = vecNorm(&r.dir);
 
-/*    r.dir.x = -r.dir.x;
-    r.dir.y = -r.dir.y;
-    r.dir.z = -r.dir.z;*/
-    //printf("%f, %f, %f\n",r.dir.x, r.dir.y, r.dir.z);
 	hit_tri w = Intersect(&r);
     printf("wFLAG = %d \n", w.FLAG);
-    //printf("Wflag %d\n",w.FLAG );
 	//This checks if the ray intersects
 	//something before hitting a light source.
 	if (w.FLAG == 0)
@@ -312,12 +305,9 @@ float AccLightSource(vector *q, ray *v){
 		float light_intensity_diff = 1 / distance(q, &light.point) * light.diff_int; //Use point source light definition
                                                                                      //for distance dropout
 		float diff_int = dotProduct(&Lhat, &Nhat) * kd * light_intensity_diff; //Diffusion Intensity
-        //printf("Diff Int: %f \n", diff_int);
         float ks = .7;
         
         ray V = reflectedRay(&view, &Nhat, q);//Viewer ray
-        printf("VReflected = %f, %f, %f \n", V.dir.x, V.dir.y, V.dir.z);
-        printf("V = %f, %f, %f \n", view.dir.x, view.dir.y, view.dir.z);
         V.dir = vecNorm(&V.dir);
         ray R = reflectedRay(&r, &Nhat, q);//Perfectly reflected light ray
         R.dir = vecNorm(&R.dir);
@@ -335,10 +325,6 @@ float AccLightSource(vector *q, ray *v){
             color += spec_int;
         }
         
-		//printf("V: %f, %f, %f, and RdotV = %f\n", V.dir.x, V.dir.y, V.dir.z, color);
-        //printf("R: %f, %f, %f, and RdotV = %f\n", r.dir.x, r.dir.y, r.dir.z, RdotV);
-
-
 	}
 	//End the for loop
 
@@ -376,7 +362,7 @@ float Trace(ray *r, int depth){
 
 
 //http://stackoverflow.com/questions/2693631/read-ppm-file-and-store-it-in-an-array-coded-with-c
-void writePPM(const char *filename, unsigned char *myimg, int w, int h)
+void writePPM(const char *filename, unsigned char myimg[WIDTH][HEIGHT][3], int w, int h)
 {
     FILE *fp;
     //open file for output
@@ -406,36 +392,21 @@ int main()
 {
 	light.point.x = -1;
 	light.point.y = 0;
-	light.point.z = -4;
-	light.diff_int = 700;
+	light.point.z = 2;
+	light.diff_int = 1400;
     light.spec_int = 700;
 
 	tglobal.p1.x = 3; //Triangle is parallel to the yz plane, and is isoceles.
 	tglobal.p1.y = 3;
-	tglobal.p1.z = 3;
+	tglobal.p1.z = -3;
 
 	tglobal.p2.x = 3;
 	tglobal.p2.y = -3;
-	tglobal.p2.z = 3;
+	tglobal.p2.z = -3;
 
 	tglobal.p3.x = 3;
 	tglobal.p3.y = 0;
-	tglobal.p3.z = -4;
-
-
-    triangle t;
-
-    t.p1.x = 3; //Triangle is parallel to the yz plane, and is isoceles.
-    t.p1.y = 3;
-    t.p1.z = -2;
-
-    t.p2.x = 3;
-    t.p2.y = -3;
-    t.p2.z = -2;
-    
-    t.p3.x = 3;
-    t.p3.y = 0;
-    t.p3.z = 4;
+	tglobal.p3.z = 4;
 
     ray r;
     r.start.x = 0;
@@ -448,68 +419,31 @@ int main()
 
     int y,z;
 
-    for (z=10;z>-11;z--){
-        r.dir.z=z;
-        printf("\n");
-        for (y=-10; y<11;y++){
-            r.dir.y = y;
-            if (Trace(&r, 0)>20){
-                printf("++");
-            }else{
-                printf("--");
-            }
-        }
-    }
+    unsigned char img[WIDTH][HEIGHT][3];
 
-//
-
-    unsigned char img[WIDTH * HEIGHT * 3];
     float yf;
     float zf;
     for (z=0;z<HEIGHT;z++){
     	zf = z;
         r.dir.z = ((zf-HEIGHT/2)/HEIGHT) * 20;
-        //printf("r.dir.z = %f", r.dir.z);
         for (y=0;y<WIDTH;y++){
         	yf = y;
             r.dir.y = ((yf-WIDTH/2)/WIDTH) * 20;
-            //printf("\nyf: %f", r.dir.y);
-            
-/*            if (Trace(&r, 0)>.11)
-            {
-            	printf("Trace: %f\n", Trace(&r, 0));
-            }*/
+
         	float red = Trace(&r, 0);
             if (red > 255.0)
             {
                 red = 255.0;
             }
-            img[(WIDTH-y+z*WIDTH)*3 +0] = red;
-            img[(WIDTH-y+z*WIDTH)*3 +1] = 0;
-            img[(WIDTH-y+z*WIDTH)*3 +2] = 0;
+            img[z][HEIGHT-y][0] = red;
+            img[z][HEIGHT-y][1] = 0;
+            img[z][HEIGHT-y][2] = 0;
 
     
         }
     }
 
     writePPM("image.ppm",img,WIDTH,HEIGHT);
-//
 
-
-    r.start.x = 0;
-    r.start.y = 0;
-    r.start.z = 0;
-
-    r.dir.x = 4;
-    r.dir.y = 1;
-    r.dir.z = 0;
-
-    hit_tri intersect = planeIntersect(&t, &r);
-    vector norm = triangleNormal(&tglobal);
-    ray Ref = reflectedRay(&r, &norm, &intersect.point);
-    printf("\nNormal:      \n%f, %f, %f\n", norm.x, norm.y, norm.z);
-    printf("Unreflected: \n%f, %f, %f\n", r.dir.x, r.dir.y, r.dir.z);
-    printf("Reflected Direction:   \n%f, %f, %f\n", Ref.dir.x, Ref.dir.y, Ref.dir.z);
-    printf("Reflected Start:  %f, %f, %f\n", Ref.start.x, Ref.start.y, Ref.start.z);
     return 0;
 }
