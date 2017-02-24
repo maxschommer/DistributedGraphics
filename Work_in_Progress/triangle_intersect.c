@@ -19,6 +19,10 @@ typedef struct{
     vector p1;
     vector p2;
     vector p3;
+    float ks;
+    float kd;
+    float ka;
+    float gamma;
 }triangle;
 
 typedef struct{
@@ -30,7 +34,9 @@ typedef struct{
 typedef struct
 {
 	int FLAG;
+    int index; //This is the index of the triangle that it hit.
 	vector point;
+
 }hit_tri;
 
 typedef struct
@@ -39,6 +45,11 @@ typedef struct
 	float diff_int; //Diffuse Intensity
 	float spec_int; //Specular Intensity
 }point_light;
+
+typedef struct
+{
+    float ***triangles;
+}model;
 
 //This is used to test Trace code,
 //which requires a global object. We're
@@ -225,17 +236,19 @@ The inputed triangle should be removed
 when function is verified to work, and
 the function should act on a global 
 collection of triangles called an object*/
-hit_tri Intersect(ray *r){
-    //int inside;
-    hit_tri find_intersect = planeIntersect(&tglobal, r);
-    if ((find_intersect.FLAG) && (inTri(&tglobal,&find_intersect.point))){
-        find_intersect.FLAG = 1;
-        return find_intersect;
-    }else{
-        find_intersect.FLAG = 0;
-        return find_intersect;
-    }
+hit_tri Intersect(ray *r, model *m){
 
+    // for (int i = 0; i < count; ++i)
+    // {
+        hit_tri find_intersect = planeIntersect(&tglobal, r);
+        if ((find_intersect.FLAG) && (inTri(&tglobal,&find_intersect.point))){
+            find_intersect.FLAG = 1;
+            return find_intersect;
+        }else{
+            find_intersect.FLAG = 0;
+            return find_intersect;
+        }
+    // }
 }
 
 
@@ -275,7 +288,8 @@ to be able to loop.*/
 float AccLightSource(vector *q, ray *v){
 	float ia = 30; //This needs to become global
 	float color = ia;
-    float gamma = 12;
+    float gamma = 15;
+    float ka = 1;
     ray view = *v;
 
     vector buffer; //This is the distance away from the triangle's
@@ -291,8 +305,8 @@ float AccLightSource(vector *q, ray *v){
     r.start = vecSum(q, &buffer);
     r.dir = vecSub(&light.point, &r.start);
     r.dir = vecNorm(&r.dir);
-
-	hit_tri w = Intersect(&r);
+    model stl;
+	hit_tri w = Intersect(&r, &stl);
     //printf("wFLAG = %d \n", w.FLAG);
 	//This checks if the ray intersects
 	//something before hitting a light source.
@@ -323,7 +337,7 @@ float AccLightSource(vector *q, ray *v){
         {
             color += spec_int;
         }
-        
+        color += ia*ka;
 	}
 	//End the for loop
 
@@ -331,15 +345,14 @@ float AccLightSource(vector *q, ray *v){
 }
 
 
-float Trace(ray *r, int depth){
+float Trace(ray *r, int depth, model *stl){
 	float ia = 30; //This needs to become global
 	
     if (depth >4) //Checks if maximum recursion depth is met
 	{
 		return ia;
 	}
-
-	hit_tri q = Intersect(r);
+	hit_tri q = Intersect(r, stl);
 	
 	
 	if (q.FLAG==0){
@@ -390,7 +403,7 @@ void writePPM(const char *filename, unsigned char myimg[HEIGHT][WIDTH][3], int w
 int main()
 {
 	light.point.x = -1;
-	light.point.y = 0;
+	light.point.y = 5;
 	light.point.z = 2;
 	light.diff_int = 1400;
     light.spec_int = 700;
@@ -416,6 +429,7 @@ int main()
     r.dir.y = 0;
     r.dir.z = 0;
 
+    model *stl;
     for (int i = 0; i < 30; ++i)
     {
         float mult = i;
@@ -434,7 +448,7 @@ int main()
                 yf = y;
                 r.dir.y = ((yf-WIDTH/2)/WIDTH) * 20;
 
-                float red = Trace(&r, 0);
+                float red = Trace(&r, 0, stl);
                 if (red > 255.0)
                 {
                     red = 255.0;
@@ -447,11 +461,11 @@ int main()
         
             }
         }
-        char str[15];
-        snprintf(str, sizeof(str), "image%03d.ppm", i);
+        char str[20];
+        snprintf(str, sizeof(str), "Images/image%03d.ppm", i);
         writePPM(str, img,WIDTH,HEIGHT);
 
     }
-   
+
     return 0;
 }
