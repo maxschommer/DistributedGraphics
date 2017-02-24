@@ -4,7 +4,7 @@ a ray and a triangle*/
 #include <stdio.h>
 #include <stdbool.h>
 #include <math.h>
-#define WIDTH 800
+#define WIDTH 600
 #define HEIGHT 800
 /*#include "../main.h"
 */
@@ -273,7 +273,7 @@ ray hitting the triangle (used for specular highlights).
 Currently, it just does this for one light source. It needs
 to be able to loop.*/
 float AccLightSource(vector *q, ray *v){
-	float ia = .1; //This needs to become global
+	float ia = 30; //This needs to become global
 	float color = ia;
     float gamma = 12;
     ray view = *v;
@@ -293,7 +293,7 @@ float AccLightSource(vector *q, ray *v){
     r.dir = vecNorm(&r.dir);
 
 	hit_tri w = Intersect(&r);
-    printf("wFLAG = %d \n", w.FLAG);
+    //printf("wFLAG = %d \n", w.FLAG);
 	//This checks if the ray intersects
 	//something before hitting a light source.
 	if (w.FLAG == 0)
@@ -304,7 +304,7 @@ float AccLightSource(vector *q, ray *v){
 		vector Nhat = triangleNormal(&tglobal);//Normal of triangle
 		float light_intensity_diff = 1 / distance(q, &light.point) * light.diff_int; //Use point source light definition
                                                                                      //for distance dropout
-		float diff_int = dotProduct(&Lhat, &Nhat) * kd * light_intensity_diff; //Diffusion Intensity
+		float diff_int = -1 * dotProduct(&Lhat, &Nhat) * kd * light_intensity_diff; //Diffusion Intensity
         float ks = .7;
         
         ray V = reflectedRay(&view, &Nhat, q);//Viewer ray
@@ -312,14 +312,13 @@ float AccLightSource(vector *q, ray *v){
         ray R = reflectedRay(&r, &Nhat, q);//Perfectly reflected light ray
         R.dir = vecNorm(&R.dir);
 
-
-
         view.dir = vecNorm(&view.dir);
         float RdotV = dotProduct(&view.dir, &R.dir);
         float light_intensity_spec = 1 / distance(q, &light.point) * light.spec_int; 
         float spec_int = pow(RdotV, gamma) * light_intensity_spec * ks;
 
 		color += diff_int;
+        //printf("%f\n",dotProduct(&Lhat, &Nhat));
         if (spec_int > 0)
         {
             color += spec_int;
@@ -333,7 +332,7 @@ float AccLightSource(vector *q, ray *v){
 
 
 float Trace(ray *r, int depth){
-	float ia = .1; //This needs to become global
+	float ia = 30; //This needs to become global
 	
     if (depth >4) //Checks if maximum recursion depth is met
 	{
@@ -362,7 +361,7 @@ float Trace(ray *r, int depth){
 
 
 //http://stackoverflow.com/questions/2693631/read-ppm-file-and-store-it-in-an-array-coded-with-c
-void writePPM(const char *filename, unsigned char myimg[WIDTH][HEIGHT][3], int w, int h)
+void writePPM(const char *filename, unsigned char myimg[HEIGHT][WIDTH][3], int w, int h)
 {
     FILE *fp;
     //open file for output
@@ -417,33 +416,42 @@ int main()
     r.dir.y = 0;
     r.dir.z = 0;
 
-    int y,z;
+    for (int i = 0; i < 30; ++i)
+    {
+        float mult = i;
+        tglobal.p3.x = 1.0+0.2 * mult;
+        int y,z;
 
-    unsigned char img[WIDTH][HEIGHT][3];
+        unsigned char img[HEIGHT][WIDTH][3];
+        
+        float yf;
+        float zf;
+        for (z=0;z<HEIGHT;z++){
+            zf = z;
 
-    float yf;
-    float zf;
-    for (z=0;z<HEIGHT;z++){
-    	zf = z;
-        r.dir.z = ((zf-HEIGHT/2)/HEIGHT) * 20;
-        for (y=0;y<WIDTH;y++){
-        	yf = y;
-            r.dir.y = ((yf-WIDTH/2)/WIDTH) * 20;
+            r.dir.z = ((zf-HEIGHT/2)/HEIGHT) * 20;
+            for (y=0;y<WIDTH;y++){
+                yf = y;
+                r.dir.y = ((yf-WIDTH/2)/WIDTH) * 20;
 
-        	float red = Trace(&r, 0);
-            if (red > 255.0)
-            {
-                red = 255.0;
+                float red = Trace(&r, 0);
+                if (red > 255.0)
+                {
+                    red = 255.0;
+                }
+                //printf("Hi\n");
+                img[HEIGHT-z-1][y][0] = red;
+                img[HEIGHT-z-1][y][1] = 0;
+                img[HEIGHT-z-1][y][2] = 0;
+
+        
             }
-            img[z][HEIGHT-y][0] = red;
-            img[z][HEIGHT-y][1] = 0;
-            img[z][HEIGHT-y][2] = 0;
-
-    
         }
+        char str[15];
+        snprintf(str, sizeof(str), "image%03d.ppm", i);
+        writePPM(str, img,WIDTH,HEIGHT);
+
     }
-
-    writePPM("image.ppm",img,WIDTH,HEIGHT);
-
+   
     return 0;
 }
