@@ -288,7 +288,7 @@ to be able to loop.*/
 float AccLightSource(vector *q, ray *v){
 	float ia = 30; //This needs to become global
 	float color = ia;
-    float gamma = 15;
+    float gamma = 25;
     float ka = 1;
     ray view = *v;
 
@@ -403,7 +403,7 @@ void writePPM(const char *filename, unsigned char myimg[HEIGHT][WIDTH][3], int w
 int main()
 {
 	light.point.x = -1;
-	light.point.y = 5;
+	light.point.y = 0;
 	light.point.z = 2;
 	light.diff_int = 1400;
     light.spec_int = 700;
