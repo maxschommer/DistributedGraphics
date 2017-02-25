@@ -68,13 +68,14 @@ triray search_for_vertex(char *fname) {
 	int num_of_lines = 0;
 	int find_result = 0;
 	char temp[512];
+
 	int ch, number_of_lines = 0;
 
 	fp = fopen(fname, "r");
 
 	//iterate once through the file to find number of lines
 	while(fgets(temp, 512, fp) != NULL) {
-		if((strstr(temp, "vertex")) != NULL) {
+		if((((strstr(temp, "vertex")) != NULL) | (strstr(temp, "normal")) != NULL)){
 			number_of_lines++;
 		}
 		ch++;
@@ -84,14 +85,13 @@ triray search_for_vertex(char *fname) {
 	fclose(fp);
 	fp = fopen(fname, "r");
 
-	printf("%d\n",number_of_lines/3);
 
 	int i = 0;
 	int j = 0;
 
 	float*** numbers;
-	size_t xlen = (number_of_lines/3);
-    size_t ylen = 3;
+	size_t xlen = (number_of_lines/4);
+    size_t ylen = 4;
     size_t zlen = 3;
 
     //allocate data
@@ -99,21 +99,40 @@ triray search_for_vertex(char *fname) {
 
     //assign values to the 3d arary called numbers
 	while(fgets(temp, 512, fp) != NULL) {
-		if((strstr(temp, "vertex")) != NULL) {
+		if(((strstr(temp, "vertex")) != NULL)){
 			num_of_lines++;
 
 			char g[10];
 
-			if (sscanf(temp,"%s %f %f %f",g, &numbers[i][j][0], &numbers[i][j][1], &numbers[i][j][2])){
-				//printf("%f %f %f\n", numbers[i][j][0], numbers[i][j][1], numbers[i][j][2]);
+			sscanf(temp,"%s %f %f %f",g, &numbers[i][j][0], &numbers[i][j][1], &numbers[i][j][2]);
+			// printf("%s\n", temp);
+			// printf("%f %f %f\n", numbers[i][j][0], numbers[i][j][1], numbers[i][j][2]);
 				j++;
-				if (j==3){
+				if (j==4){
 					i++;
 					//printf("\n");
 					j=0;
 
 				}
-			}
+
+			find_result++;
+
+		}else if (((strstr(temp, "facet normal")) != NULL))
+		{
+			num_of_lines++;
+
+			char g[40];
+			char d[10];
+
+			sscanf(temp,"%s %s %f %f %f",g, d, &numbers[i][j][0], &numbers[i][j][1], &numbers[i][j][2]);
+			
+				j++;
+				if (j==4){
+					i++;
+					//printf("\n");
+					j=0;
+
+				}
 
 			find_result++;
 		}
@@ -130,10 +149,10 @@ triray search_for_vertex(char *fname) {
 	triray object;
 	object.triangles = numbers;
 	object.length = xlen;
+	printf("%d\n",object.length);
 
    	return(object);
 }
-
 
 // int main(int argc, char *argv[]) {
 // 	float*** result;
