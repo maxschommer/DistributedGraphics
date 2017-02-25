@@ -75,7 +75,7 @@ triray search_for_vertex(char *fname) {
 
 	//iterate once through the file to find number of lines
 	while(fgets(temp, 512, fp) != NULL) {
-		if((((strstr(temp, "vertex")) != NULL) | (strstr(temp, "normal")) != NULL)){
+		if((((strstr(temp, "vertex")) != NULL) | ((strstr(temp, "normal")) != NULL))){
 			number_of_lines++;
 		}
 		ch++;
