@@ -63,21 +63,37 @@ float*** search_for_vertex(char *fname) {
 	int num_of_lines = 0;
 	int find_result = 0;
 	char temp[512];
+	int ch, number_of_lines = 0;
 
 	fp = fopen(fname, "r");
+
+	//iterate once through the file to find number of lines
+	while(fgets(temp, 512, fp) != NULL) {
+		if((strstr(temp, "vertex")) != NULL) {
+			number_of_lines++;
+		}
+		ch++;
+	}
+
+	//close and open the file again for the 2nd loop
+	fclose(fp);
+	fp = fopen(fname, "r");
+
+	printf("%d\n",number_of_lines/3);
 
 	int i = 0;
 	int j = 0;
 
 	float*** numbers;
-	size_t xlen = 12;
+	size_t xlen = (number_of_lines/3);
     size_t ylen = 3;
     size_t zlen = 3;
 
+    //allocate data
     numbers = alloc_data(xlen, ylen, zlen);
 
+    //assign values to the 3d arary called numbers
 	while(fgets(temp, 512, fp) != NULL) {
-
 		if((strstr(temp, "vertex")) != NULL) {
 			num_of_lines++;
 
@@ -92,14 +108,12 @@ float*** search_for_vertex(char *fname) {
 					j=0;
 
 				}
-			};
+			}
 
 			find_result++;
 		}
 		line_num++;
 	}
-
-	//printf("%d\n",num_of_lines);
 
 	if(find_result == 0) {
 		printf("\nSorry, couldn't find a match.\n");
@@ -123,13 +137,13 @@ int main(int argc, char *argv[]) {
 	result = search_for_vertex(argv[1]);
 
 	//prints out content of 3d array
-	int i,j;
-	for (i=0;i<12;i++){
-		for(j=0;j<3;j++){
-			printf("%f %f %f\n", result[i][j][0], result[i][j][1], result[i][j][2]);
-		}
-		printf("%d\n",i);
-	}
+	// int i,j;
+	// for (i=0;i<96;i++){
+	// 	for(j=0;j<3;j++){
+	// 		printf("%f %f %f\n", result[i][j][0], result[i][j][1], result[i][j][2]);
+	// 	}
+	// 	printf("%d\n",i);
+	// }
 
 	return(0);
 }
