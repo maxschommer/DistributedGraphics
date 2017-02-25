@@ -64,9 +64,7 @@ float*** search_for_vertex(char *fname) {
 	int find_result = 0;
 	char temp[512];
 
-	if((fp = fopen(fname, "r")) == NULL) {
-		printf("error");
-	};
+	fp = fopen(fname, "r");
 
 	int i = 0;
 	int j = 0;
