@@ -5,6 +5,11 @@
 #include <errno.h>
 #include <time.h>
 
+typedef struct 
+{
+	int length;
+	float*** triangles;
+}triray;
 
 //http://stackoverflow.com/questions/2306172/malloc-a-3-dimensional-array-in-c
 void free_data(float ***data, size_t xlen, size_t ylen)
@@ -57,7 +62,7 @@ float ***alloc_data(size_t xlen, size_t ylen, size_t zlen)
 }
 
 //parses a file line by line and adds points to 3d array if line contains the string "vertex"
-float*** search_for_vertex(char *fname) {
+triray search_for_vertex(char *fname) {
 	FILE *fp;
 	int line_num = 1;
 	int num_of_lines = 0;
@@ -122,28 +127,32 @@ float*** search_for_vertex(char *fname) {
 	//Close the file
 	fclose(fp);
 
-   	return(numbers);
+	triray object;
+	object.triangles = numbers;
+	object.length = xlen;
+
+   	return(object);
 }
 
 
-int main(int argc, char *argv[]) {
-	float*** result;
-	int errno;
+// int main(int argc, char *argv[]) {
+// 	float*** result;
+// 	int errno;
 
-	//Use system("cls") on windows
-	//Use system("clear") on Unix/Linux
-	system("clear");
+// 	//Use system("cls") on windows
+// 	//Use system("clear") on Unix/Linux
+// 	system("clear");
 
-	result = search_for_vertex(argv[1]);
+// 	result = search_for_vertex(argv[1]);
 
-	//prints out content of 3d array
-	// int i,j;
-	// for (i=0;i<96;i++){
-	// 	for(j=0;j<3;j++){
-	// 		printf("%f %f %f\n", result[i][j][0], result[i][j][1], result[i][j][2]);
-	// 	}
-	// 	printf("%d\n",i);
-	// }
+// 	//prints out content of 3d array
+// 	// int i,j;
+// 	// for (i=0;i<96;i++){
+// 	// 	for(j=0;j<3;j++){
+// 	// 		printf("%f %f %f\n", result[i][j][0], result[i][j][1], result[i][j][2]);
+// 	// 	}
+// 	// 	printf("%d\n",i);
+// 	// }
 
-	return(0);
-}
+// 	return(0);
+// }

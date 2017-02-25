@@ -4,6 +4,7 @@ a ray and a triangle*/
 #include <stdio.h>
 #include <stdbool.h>
 #include <math.h>
+#include "parse_stl.c"
 #define WIDTH 600
 #define HEIGHT 800
 /*#include "../main.h"
@@ -34,7 +35,6 @@ typedef struct{
 typedef struct
 {
 	int FLAG;
-    int index; //This is the index of the triangle that it hit.
 	vector point;
 
 }hit_tri;
@@ -46,10 +46,7 @@ typedef struct
 	float spec_int; //Specular Intensity
 }point_light;
 
-typedef struct
-{
-    float ***triangles;
-}model;
+
 
 //This is used to test Trace code,
 //which requires a global object. We're
@@ -236,19 +233,34 @@ The inputed triangle should be removed
 when function is verified to work, and
 the function should act on a global 
 collection of triangles called an object*/
-hit_tri Intersect(ray *r, model *m){
+hit_tri Intersect(ray *r, triray *m){
 
-    // for (int i = 0; i < count; ++i)
-    // {
-        hit_tri find_intersect = planeIntersect(&tglobal, r);
-        if ((find_intersect.FLAG) && (inTri(&tglobal,&find_intersect.point))){
+
+    for (int i = 0; i < m->length; ++i)
+    {
+        triangle t;
+
+        t.p1.x = m->triangles[i][0][0]; //Triangle is parallel to the yz plane, and is isoceles.
+        t.p1.y = m->triangles[i][0][1];
+        t.p1.z = m->triangles[i][0][2];
+
+        t.p2.x = m->triangles[i][1][0];
+        t.p2.y = m->triangles[i][1][1];
+        t.p2.z = m->triangles[i][1][2];
+
+        t.p3.x = m->triangles[i][2][0];
+        t.p3.y = m->triangles[i][2][1];
+        t.p3.z = m->triangles[i][2][2];
+        
+        hit_tri find_intersect = planeIntersect(&t, r);
+        if ((find_intersect.FLAG) && (inTri(&t,&find_intersect.point))){
             find_intersect.FLAG = 1;
             return find_intersect;
         }else{
             find_intersect.FLAG = 0;
             return find_intersect;
         }
-    // }
+    }
 }
 
 
@@ -305,7 +317,7 @@ float AccLightSource(vector *q, ray *v){
     r.start = vecSum(q, &buffer);
     r.dir = vecSub(&light.point, &r.start);
     r.dir = vecNorm(&r.dir);
-    model stl;
+    triray stl;
 	hit_tri w = Intersect(&r, &stl);
     //printf("wFLAG = %d \n", w.FLAG);
 	//This checks if the ray intersects
@@ -345,7 +357,7 @@ float AccLightSource(vector *q, ray *v){
 }
 
 
-float Trace(ray *r, int depth, model *stl){
+float Trace(ray *r, int depth, triray *stl){
 	float ia = 30; //This needs to become global
 	
     if (depth >4) //Checks if maximum recursion depth is met
@@ -400,11 +412,11 @@ void writePPM(const char *filename, unsigned char myimg[HEIGHT][WIDTH][3], int w
 
 
 
-int main()
+int main(int argc, char *argv[])
 {
-	light.point.x = -1;
-	light.point.y = 0;
-	light.point.z = 2;
+	light.point.x = 0.1;
+	light.point.y = 0.1;
+	light.point.z = 0.1;
 	light.diff_int = 1400;
     light.spec_int = 700;
 
@@ -429,7 +441,9 @@ int main()
     r.dir.y = 0;
     r.dir.z = 0;
 
-    model *stl;
+    triray stl;
+    stl = search_for_vertex(argv[1]);
+
     for (int i = 0; i < 30; ++i)
     {
         float mult = i;
@@ -448,7 +462,7 @@ int main()
                 yf = y;
                 r.dir.y = ((yf-WIDTH/2)/WIDTH) * 20;
 
-                float red = Trace(&r, 0, stl);
+                float red = Trace(&r, 0, &stl);
                 if (red > 255.0)
                 {
                     red = 255.0;
