@@ -97,11 +97,11 @@ float det3x3(triangle *Mat){
 }
 
 //This subtracts vector 2 from vector 1. Ex. v1-v2 
-vector vecSub(vector *v1, vector *v2){
+vector vecSub(vector v1, vector v2){
     vector result;
-    result.x = v1->x - v2->x;
-    result.y = v1->y - v2->y;
-    result.z = v1->z - v2->z;
+    result.x = v1.x - v2.x;
+    result.y = v1.y - v2.y;
+    result.z = v1.z - v2.z;
     return result;
 }
 
@@ -141,7 +141,7 @@ light of a point source. It is the
 distance function, and takes two vectors,
 and returns the distance between them*/
 float distance(vector *u, vector *v){
-	vector diff = vecSub(u, v);
+	vector diff = vecSub(*u, *v);
 	return sqrt(diff.x * diff.x + diff.y * diff.y + diff.z * diff.z);
 }
 
@@ -185,13 +185,12 @@ triangle matInv(triangle *A){
 
 /*Returns the index of the minimum, non-zero value in an array.*/
 int find_minimum(float a[], int n) {
-    float min;
-    int c, index;
+    float min = 0;
+    int index = 0 ;
     float epsilon = .01;
     min = a[0];
-    index = 0;
 
-    for (c = 1; c < n; c++) {
+    for (int c = 0; c < n; c++) {
         if ((a[c] < min) && (a[c] > epsilon)){
             index = c;
             min = a[c];
@@ -210,19 +209,23 @@ hit_tri planeIntersect(triangle *tri, ray *r){
     /*Formula is (a . n)/(r . n)*/
 
     vector n = triangleNormal(tri);
-    vector a = vecSub(&tri->p1, &r->start);
+    vector a = vecSub(tri->p1, r->start);
     float d = dotProduct(&a, &n)/dotProduct(&r->dir, &n);
     if (d<=0)
     {
     	hit_tri no_intersect;
     	no_intersect.FLAG = 0;
+        no_intersect.normal = tri->normal;
     	return no_intersect;
     }
     vector v1 = vecScale(&r->dir, &d);
     vector v2 = r->start;
     hit_tri result;
+
     result.point = vecSum(&v1, &v2);
     result.FLAG = 1;
+    result.normal = tri->normal;
+    //printf("Normal: %f, %f, %f, \n",result.normal.x,  result.normal.y, result.normal.z);
     return result;
 }
 
@@ -233,9 +236,9 @@ Returns true or false*/
 int inTri(triangle *t, vector *p){
 	// define vectors from point to point of triangle
 	// to define triangle boundaries
-	vector v1 = vecSub(&t->p1, &t->p2);
-	vector v2 = vecSub(&t->p2, &t->p3);
-	vector v3 = vecSub(&t->p3, &t->p1);
+	vector v1 = vecSub(t->p1, t->p2);
+	vector v2 = vecSub(t->p2, t->p3);
+	vector v3 = vecSub(t->p3, t->p1);
 
 	vector n = triangleNormal(t);
 
@@ -245,9 +248,9 @@ int inTri(triangle *t, vector *p){
 
 	// define vectors from given point to 
 	// one of the points that make up the triangle
-	vector fplane1 = vecSub(p, &t->p1);
-	vector fplane2 = vecSub(p, &t->p2);
-	vector fplane3 = vecSub(p, &t->p3);
+	vector fplane1 = vecSub(*p, t->p1);
+	vector fplane2 = vecSub(*p, t->p2);
+	vector fplane3 = vecSub(*p, t->p3);
 
 	// determine if given point lies above
 	// or below plane defined by triangle
@@ -273,30 +276,40 @@ The inputed triangle should be removed
 when function is verified to work, and
 the function should act on a global 
 collection of triangles called an object*/
-hit_tri Intersect(ray *r, triray *m){
+hit_tri Intersect(ray r, triray m){
     //printf("Length: %d\n", m->length);
 
-    int hit_array[m->length];
-    float hit_dist[m->length]; //This is the distance of the hit point to the camera.
+    int hit_array[m.length];
+    float hit_dist[m.length]; //This is the distance of the hit point to the camera.
     triangle t;
 
     int isHit = 0;
 
     hit_tri find_intersect;
+    find_intersect.point.x = 0;
+    find_intersect.point.y = 0;
+    find_intersect.point.z = 0;
+    find_intersect.normal.x = 0;
+    find_intersect.normal.y = 0;
+    find_intersect.normal.z = 0;
+    find_intersect.FLAG = 0;
+    find_intersect.index = 0;
 
+    //printf("%f, %f, %f\n",find_intersect.normal.x, find_intersect.normal.y, find_intersect.normal.z );
     vector camera;
     camera.x = 0;
     camera.y = 0;
     camera.z = 0;
 
-    for (int i = 0; i < m->length; ++i)
+    for (int i = 0; i < m.length; ++i)
     {
-        t = tri_init(m, i);
+        t = tri_init(&m, i);
         
-        find_intersect = planeIntersect(&t, r);
+        find_intersect = planeIntersect(&t, &r);
 
         //printf("%f, %f, %f\n",find_intersect.point.x, find_intersect.point.y, find_intersect.point.z );
         if ((find_intersect.FLAG) && (inTri(&t,&find_intersect.point))){
+            //printf("%f, %f, %f\n",find_intersect.point.x, find_intersect.point.y, find_intersect.point.z );
             //printf("Intersect Flag: %d\n", find_intersect.FLAG);
             find_intersect.FLAG = 1;
             hit_array[i] = 1;
@@ -305,35 +318,40 @@ hit_tri Intersect(ray *r, triray *m){
             
 
         }else{
+            //printf("1\n");
             find_intersect.FLAG = 0;
             hit_array[i] = 0;
-            hit_dist[i] = 10000;
+            hit_dist[i] = 100;
             
         }
     }
 
-    for (int j = 0; j < m->length; ++j)
+    for (int j = 0; j < m.length; ++j)
     {
+        //printf("%.02f, ", hit_dist[j]);
         if (hit_array[j] == 1)
         {
-            //printf("Hit!\n");
+            
             isHit = 1;
         }
     }
 
+    //printf("\n");
     //printf("Hillow\n");
     if (isHit) //Checks if any triangle has been hit.
     {
-        triangle result = tri_init(m, find_minimum(hit_dist, m->length));
-        find_intersect = planeIntersect(&result, r);
+        int min = find_minimum(hit_dist, m.length);
+        //printf("min = %d\n", min);
+        triangle result = tri_init(&m, min);
+        find_intersect = planeIntersect(&result, &r);
         find_intersect.FLAG = 1;
-        find_intersect.index = find_minimum(hit_dist, m->length);
+        find_intersect.index = min;
+
         //printf("Find Intersect Index: %f\n", hit_dist[2]);
-        find_intersect.normal = triangleNormal(&result);
         //printf("Intersect: %f, %f, %f\n", find_intersect.point.x, find_intersect.point.y, find_intersect.point.z);
     }
 
-
+    //printf("Find Intersect %d\n", find_intersect.FLAG);
     // printf("\n");
     return find_intersect;
 
@@ -359,7 +377,7 @@ ray reflectedRay(ray *d, vector *n, vector *p){
 	float dn = 2*(dotProduct(&sent_ray.dir, &normal_vector));
 	vector c = vecScale(&normal_vector, &dn);
 	ray result;
-	result.dir = vecSub(&c, &sent_ray.dir);
+	result.dir = vecSub(c, sent_ray.dir);
 	result.start = point;
 
 	return result;
@@ -383,28 +401,25 @@ float AccLightSource(vector *q, ray *v, triray *stl, int index){
     vector buffer; //This is the distance away from the triangle's
                    //surface that the ray should start so that the intersect
                    //is correctly calculated without ambiguity. 
-    buffer.x = v->dir.x * .01;
-    buffer.y = v->dir.y * .01;
-    buffer.z = v->dir.z * .01;
+    buffer.x = -view.dir.x * .01;
+    buffer.y = -view.dir.y * .01;
+    buffer.z = -view.dir.z * .01;
 
 	//For loop goes here, to do all light sources
 	ray r;
-    light.point.x = -1;
-    light.point.y = 0;
-    light.point.z = 1;
-
     r.start = vecSum(q, &buffer);
-    vector rdir = vecSub(&r.start, &light.point);
+    vector rdir = vecSub(light.point, r.start);
     r.dir = rdir;
     r.dir = vecNorm(&r.dir);
-    //printf("Normal Tri: %f, %f, %f\n", r.dir.x, r.dir.y, r.dir.z);
-	hit_tri w = Intersect(&r, stl);
+    // printf("Normal Tri: %f, %f, %f\n", r.start.x, r.start.y, r.start.z);
+	hit_tri w = Intersect(r, *stl);
+
     //printf("wFLAG = %d \n", w.FLAG);
 	//This checks if the ray intersects
 	//something before hitting a light source.
 
-	// if (w.FLAG == 0)
-	// {    
+	if (w.FLAG == 0)
+	{ 
 		float kd = .5; //Diffusion/reflection constant
          
 		vector Lhat = r.dir;
@@ -417,7 +432,7 @@ float AccLightSource(vector *q, ray *v, triray *stl, int index){
                                                                                      //for distance dropout
 		float diff_int =  dotProduct(&Lhat, &Nhat) * kd * light_intensity_diff;  //Diffusion Intensity
         float ks = .7;
-        printf("Color: %f\n", dotProduct(&Lhat, &Nhat));
+        //printf("Color: %f\n", dotProduct(&Lhat, &Nhat));
         ray V = reflectedRay(&view, &Nhat, q);//Viewer ray
         V.dir = vecNorm(&V.dir);
         ray R = reflectedRay(&r, &Nhat, q);//Perfectly reflected light ray
@@ -425,23 +440,23 @@ float AccLightSource(vector *q, ray *v, triray *stl, int index){
 
         view.dir = vecNorm(&view.dir);
         float RdotV = dotProduct(&view.dir, &R.dir);
-        float light_intensity_spec = 1 / distance(q, &light.point) * light.spec_int; 
+        float light_intensity_spec = 1.0 / distance(q, &light.point) * light.spec_int; 
         float spec_int = pow(RdotV, gamma) * light_intensity_spec * ks;
-        // if (diff_int >=0)
-        // {
-        color += abs(diff_int);
-            //printf("Positive Diffusion!\n");
-        // }
-        //printf("%f\n",dotProduct(&Lhat, &Nhat));
+        if (diff_int >=0)
+        {
+            color += abs(diff_int);
+        }
+        //printf("%f\n",RdotV);
         if (spec_int > 0)
         {
             color += spec_int;
         }
         //printf("color: %f\n", color );
-        color += ia*ka;
+        //color += ia*ka;
 	// }else{
  //        color = 0;
-    // }
+        // color = 200;
+    }
 	//End the for loop
 
 	return color;
@@ -454,9 +469,8 @@ float Trace(ray *r, int depth, triray *stl){
 	{
 		return ia;
 	}
-	hit_tri q = Intersect(r, stl);
+	hit_tri q = Intersect(*r, *stl);
 
-	
 	if (q.FLAG==0){
 		
 		return ia;
@@ -468,12 +482,11 @@ float Trace(ray *r, int depth, triray *stl){
     // if (q.point.x > 3)
     // {
     //     printf("Intersect_Point = %f, %f, %f\n", q.point.x, q.point.y, q.point.z);
-    
+
     // }
-    
+
     //printf("R : %f, %f, %f\n", r->dir.x, r->dir.y, r->dir.z);
 	color = AccLightSource(&q.point, r, stl, q.index);
-    
 	//printf("color = :%f\n", color);
 	//Reflection and refraction recursion starts here
 	return color;
@@ -509,8 +522,8 @@ int main(int argc, char *argv[])
 	light.point.x = -1;
 	light.point.y = 0;
 	light.point.z = 1;
-	light.diff_int = 800;
-    light.spec_int = 1400;
+	light.diff_int = 600;
+    light.spec_int = 2400;
 
 	// tglobal.p1.x = 3; //Triangle is parallel to the yz plane, and is isoceles.
 	// tglobal.p1.y = 3;
@@ -550,7 +563,6 @@ int main(int argc, char *argv[])
             zf = z;
             r.dir.z = ((zf-HEIGHT/2)/HEIGHT) * 13;
             for (y=0;y<WIDTH;y++){
-                light.point.z += .1;
                 yf = y;
                 r.dir.y = ((yf-WIDTH/2)/WIDTH) * 13;
 
