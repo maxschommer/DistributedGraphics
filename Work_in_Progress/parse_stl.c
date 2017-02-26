@@ -69,7 +69,8 @@ triray search_for_vertex(char *fname) {
 	int find_result = 0;
 	char temp[512];
 
-	int ch, number_of_lines = 0;
+	int ch = 0;
+	int number_of_lines = 0;
 
 	fp = fopen(fname, "r");
 

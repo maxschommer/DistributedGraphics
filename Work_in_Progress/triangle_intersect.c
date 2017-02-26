@@ -96,12 +96,24 @@ float det3x3(triangle *Mat){
     return det;
 }
 
-//This subtracts vector 2 from vector 1. Ex. v1-v2 
-vector vecSub(vector v1, vector v2){
+vector z_rot(vector v, float angle){
     vector result;
-    result.x = v1.x - v2.x;
-    result.y = v1.y - v2.y;
-    result.z = v1.z - v2.z;
+    result.x = 0;
+    result.y = 0;
+    result.z = 0;
+    result.x = cos(angle) * (v.x) - sin(angle) * (v.y);
+    result.y = sin(angle) * (v.x) + cos(angle) * (v.y);
+    result.z = v.z;
+
+    // printf("z_rot temp: %f, %f, %f\n", v.x, v.y, v.z);
+    // printf("z_rot resu: %f, %f, %f\n", result.x, result.y, result.z);
+    // exit(0);
+    return result;
+}
+
+//This subtracts vector 2 from vector 1. Ex. v1-v2 
+vector vecSub(vector *v1, vector *v2){
+    vector result = {v1->x - v2->x, v1->y - v2->y, v1->z - v2->z};
     return result;
 }
 
@@ -109,6 +121,78 @@ vector vecSub(vector v1, vector v2){
 vector vecSum(vector *v1, vector *v2){
     vector result = {v1->x + v2->x, v1->y + v2->y, v1->z + v2->z};
     return result;
+}
+
+/*Rotate a vector in the z direction around
+a point in space on the xy plane*/
+vector rot_point(vector r, vector o, float angle){
+    vector temp;
+    temp.x = 0;
+    temp.y = 0;
+    temp.z = 0;
+
+    vector temp2;
+    temp2.x = 0;
+    temp2.y = 0;
+    temp2.z = 0;
+    vector result;
+    result.x = 0;
+    result.y = 0;
+    result.z = 0;
+    // angle = 0;
+    vector otemp = {5,0,0};
+    temp = vecSub(&r, &otemp);
+
+    temp2 = z_rot(temp, angle);
+
+    result = vecSum(&otemp, &temp2);
+
+    //result = z_rot(r, angle);
+    // printf("rot_point: %f, %f, %f\n", result.x, .y, temp.z);
+    // exit(0);
+    return result;
+}
+
+/*Rotates an STL around a z axis based on a point*/
+void rot_object(triray *m, vector o, float angle){
+    vector temp;
+    temp.x = 0;
+    temp.y = 0;
+    temp.z = 0;
+    vector temp2;
+    temp2.x = 0;
+    temp2.y = 0;
+    temp2.z = 0;
+
+    printf("\n");
+    for (int i = 0; i < m->length; ++i)
+    {
+        temp.x = m->triangles[i][0][0];
+        temp.y = m->triangles[i][0][1];
+        temp.z = m->triangles[i][0][2];
+        
+        temp2 = z_rot(temp, angle);
+        
+        m->triangles[i][0][0] = temp2.x;
+        m->triangles[i][0][1] = temp2.y;
+        m->triangles[i][0][2] = temp2.z;
+
+        for (int j = 1; j < 4; ++j)
+        {
+            
+            temp.x = m->triangles[i][j][0];
+            temp.y = m->triangles[i][j][1];
+            temp.z = m->triangles[i][j][2];
+            
+            temp2 = rot_point(temp, o, angle);
+            
+            m->triangles[i][j][0] = temp2.x;
+            m->triangles[i][j][1] = temp2.y;
+            m->triangles[i][j][2] = temp2.z;
+        }
+
+    }
+
 }
 
 /*Scales a vector by a constant*/
@@ -141,7 +225,7 @@ light of a point source. It is the
 distance function, and takes two vectors,
 and returns the distance between them*/
 float distance(vector *u, vector *v){
-	vector diff = vecSub(*u, *v);
+	vector diff = vecSub(u, v);
 	return sqrt(diff.x * diff.x + diff.y * diff.y + diff.z * diff.z);
 }
 
@@ -156,6 +240,7 @@ vector triangleNormal(triangle *tri){
     // vector v2 = vecSub(&tri->p2, &tri->p1);
     // vector cross = crossProduct(&v1, &v2);
     // vector result = vecNorm(&cross);
+    // return result;
     return tri->normal;
 }
 
@@ -209,7 +294,7 @@ hit_tri planeIntersect(triangle *tri, ray *r){
     /*Formula is (a . n)/(r . n)*/
 
     vector n = triangleNormal(tri);
-    vector a = vecSub(tri->p1, r->start);
+    vector a = vecSub(&tri->p1, &r->start);
     float d = dotProduct(&a, &n)/dotProduct(&r->dir, &n);
     if (d<=0)
     {
@@ -236,9 +321,9 @@ Returns true or false*/
 int inTri(triangle *t, vector *p){
 	// define vectors from point to point of triangle
 	// to define triangle boundaries
-	vector v1 = vecSub(t->p1, t->p2);
-	vector v2 = vecSub(t->p2, t->p3);
-	vector v3 = vecSub(t->p3, t->p1);
+	vector v1 = vecSub(&t->p1, &t->p2);
+	vector v2 = vecSub(&t->p2, &t->p3);
+	vector v3 = vecSub(&t->p3, &t->p1);
 
 	vector n = triangleNormal(t);
 
@@ -248,9 +333,9 @@ int inTri(triangle *t, vector *p){
 
 	// define vectors from given point to 
 	// one of the points that make up the triangle
-	vector fplane1 = vecSub(*p, t->p1);
-	vector fplane2 = vecSub(*p, t->p2);
-	vector fplane3 = vecSub(*p, t->p3);
+	vector fplane1 = vecSub(p, &t->p1);
+	vector fplane2 = vecSub(p, &t->p2);
+	vector fplane3 = vecSub(p, &t->p3);
 
 	// determine if given point lies above
 	// or below plane defined by triangle
@@ -377,7 +462,7 @@ ray reflectedRay(ray *d, vector *n, vector *p){
 	float dn = 2*(dotProduct(&sent_ray.dir, &normal_vector));
 	vector c = vecScale(&normal_vector, &dn);
 	ray result;
-	result.dir = vecSub(c, sent_ray.dir);
+	result.dir = vecSub(&c, &sent_ray.dir);
 	result.start = point;
 
 	return result;
@@ -394,7 +479,7 @@ to be able to loop.*/
 float AccLightSource(vector *q, ray *v, triray *stl, int index){
 	float ia = 30; //This needs to become global
 	float color = ia;
-    float gamma = 25;
+    float gamma = 15;
     float ka = 1;
     ray view = *v;
 
@@ -408,7 +493,7 @@ float AccLightSource(vector *q, ray *v, triray *stl, int index){
 	//For loop goes here, to do all light sources
 	ray r;
     r.start = vecSum(q, &buffer);
-    vector rdir = vecSub(light.point, r.start);
+    vector rdir = vecSub(&light.point, &r.start);
     r.dir = rdir;
     r.dir = vecNorm(&r.dir);
     // printf("Normal Tri: %f, %f, %f\n", r.start.x, r.start.y, r.start.z);
@@ -444,7 +529,7 @@ float AccLightSource(vector *q, ray *v, triray *stl, int index){
         float spec_int = pow(RdotV, gamma) * light_intensity_spec * ks;
         if (diff_int >=0)
         {
-            color += abs(diff_int);
+            color += fabs(diff_int);
         }
         //printf("%f\n",RdotV);
         if (spec_int > 0)
@@ -452,11 +537,12 @@ float AccLightSource(vector *q, ray *v, triray *stl, int index){
             color += spec_int;
         }
         //printf("color: %f\n", color );
-        //color += ia*ka;
+        
 	// }else{
  //        color = 0;
         // color = 200;
     }
+    color += ia*ka;
 	//End the for loop
 
 	return color;
@@ -517,9 +603,13 @@ void writePPM(const char *filename, unsigned char myimg[HEIGHT][WIDTH][3], int w
     fclose(fp);
 }
 
+void printPoint(float *v){
+    printf("(x, y, z) = (%f, %f, %f)", v[0], v[1], v[2]);
+}
+
 int main(int argc, char *argv[])
 {
-	light.point.x = -1;
+	light.point.x = 2;
 	light.point.y = 0;
 	light.point.z = 1;
 	light.diff_int = 600;
@@ -550,7 +640,7 @@ int main(int argc, char *argv[])
 
     stl = search_for_vertex(argv[1]);
 
-    for (int i = 0; i < 1; ++i)
+    for (int i = 0; i < 200; ++i)
     {
         
         int y,z;
@@ -559,12 +649,15 @@ int main(int argc, char *argv[])
 
         float yf;
         float zf;
+        
         for (z=0;z<HEIGHT;z++){
             zf = z;
-            r.dir.z = ((zf-HEIGHT/2)/HEIGHT) * 13;
+            r.dir.z = ((zf-HEIGHT/2)/HEIGHT) * 6;
             for (y=0;y<WIDTH;y++){
+                // Iterate over the pixels of the image
+
                 yf = y;
-                r.dir.y = ((yf-WIDTH/2)/WIDTH) * 13;
+                r.dir.y = ((yf-WIDTH/2)/WIDTH) * 6;
 
                 float red = Trace(&r, 0, &stl);
 
@@ -583,7 +676,16 @@ int main(int argc, char *argv[])
         snprintf(str, sizeof(str), "Images/image%03d.ppm", i);
         writePPM(str, img,WIDTH,HEIGHT);
 
+        vector o = {5,0,0};
+        float angle = 2.0*3.14159/200;
+        rot_object(&stl, o, angle);
+       // prints out content of 3d array
+        for (int i=0;i<2;i++){
+            for(int j=0;j<4;j++){
+                printf("Triangles: %f, %f, %f\n", stl.triangles[i][j][0], stl.triangles[i][j][1], stl.triangles[i][j][2]);
+            } 
+            printf("%d\n",i);
+        }
     }
-
     return 0;
 }
