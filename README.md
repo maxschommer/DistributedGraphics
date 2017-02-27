@@ -14,7 +14,10 @@ We Implemented a ray tracer in C. We simulated light particles bouncing off an S
 ## Usage
 The STL files used must have ASCII STL format.
 
-The output from our program will be a series of .ppm files, which can then be compiled into a video through [this process](http://jupiter.ethz.ch/~pjt/makingMovies.html).
+The output from our program will be a series of .ppm files, which can then be compiled into a video by running 
+    convert image*ppm sick_rays.gif
+
+while inside the same folder as the images. You can also follow [this process](http://jupiter.ethz.ch/~pjt/makingMovies.html) to compile the .ppm files into a video.
 
 ## License
 MIT License
