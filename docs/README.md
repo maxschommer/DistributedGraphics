@@ -16,7 +16,7 @@ Knowing the equation for the plane of the triangle, we could solve for where the
 By doing this, we are able to see if a given ray hits a triangle. If it does, then we calculate the shading at that point on the triangle. If it doesn’t, we return the ambient lighting. 
 
 # Results
-We will include 2-3 videos of our ray tracer. These videos represent our best attempts at generating 3D images with a given light source from input stl files. 
+The following videos (linked in yellow) are outputted from our ray tracer. These videos represent our best attempts at generating 3D images with a given light source from input stl files. 
 
 ### Fragmentation
 ![Fragmentation](https://github.com/maxschommer/SoftSys_Terminally_Eeeel/blob/master/Work_in_Progress/Video4/a_bit_less_sad_rays.gif) 
