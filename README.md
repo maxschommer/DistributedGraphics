@@ -5,3 +5,4 @@ At a minimum, we desire to implement ray tracing for a sphere, and output a rend
 
 For a stretch goal, we want to implement a video rendering of STLs and spheres that uses recursion to back-propagate the ray’s path as it reflects and refracts off of the objects in the video. With this, we would also like to implement color rendering, full STL rendering, and custom environments. Our definition of full video capability, includes turntable renders and camera path linear (and possibly polynomial) interpolation..
 
+HELP!!!
