@@ -6,7 +6,7 @@ We Implemented a ray tracer in C. We simulated light particles bouncing off an S
 ## Authors
 * [Max Schommer](http://www.maxschommer.com/)
 * [Jeremy Garcia](https://github.com/jag-123)
-* [Rachel Yang](rachelyang02.github.io)
+* [Rachel Yang](http://rachelyang02.github.io)
 * [Bill Du](https://github.com/DHZBill)
 
 ## Getting Started 
