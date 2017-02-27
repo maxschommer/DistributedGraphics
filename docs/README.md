@@ -1,3 +1,11 @@
-We Implemented a ray tracer in C. We simulated light particles bouncing off an STL object with material properties in order to create a rendered, realistic image of that object. We created beautiful images of STLs using our ray tracer, and can do the same for any STL imputed into the program. 
+# Abstract
+We implemented a ray tracer in C to create a rendered, realistic image of an object. By simulating light particles that bounce off an STL object with material properties, we created beautiful images of STLs using our ray tracer, and can do the same for any STL imputed into the program. 
 
-Hi
+# Background
+Ray tracing is one technique to generate a 2D image from a 3D object by following the path of light and simulating the effects of its interactions with other objects in the scene. Our rays fire through each pixel in the 2D canvas, checks to see if the ray intersects with any object or the light source, and uses this information to add dimension to the image such as reflection and shadowing. For each point on the surface of an object that a ray hits, the shading is calculated using various properties of light and material. 
+Linear algebra and other mathematical formulas were necessary in implementing ray tracing. Generalizing rays into vectors, this project required the usage of dot products, cross products, matrix inversions, and inverse square roots, as well as intersection formulas to understand how to determine where a line and a plane intersect.
+
+# Implementation
+
+# Results
+We will include 2-3 videos of our ray tracer. These videos represent our best attempts at generating 3D images with a given light source from input stl files. 
