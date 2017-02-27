@@ -18,11 +18,11 @@ is a rendering of a sphere splitting apart.
 
 #### Fragmentation Pt. II
 This [video](https://github.com/maxschommer/SoftSys_Terminally_Eeeel/blob/master/Work_in_Progress/Video5/diseased_rays.gif)
-is similar to the previous video but at a higher decay rate.
+is similar to the previous video but at a higher and more destructive decay rate.
 
 #### Morning Rays
 This [video](https://github.com/maxschommer/SoftSys_Terminally_Eeeel/blob/master/Work_in_Progress/Video1/morning_rays.gif)
-moves the light source upwards, imitating a sun rising.
+showcases the upwards movement of the light source, imitating a rising sun.
 
 #### Sphere
 This [video](https://github.com/maxschommer/SoftSys_Terminally_Eeeel/blob/master/Work_in_Progress/Video6/moviefast.gif)
@@ -30,7 +30,7 @@ rotates a sphere, demonstrating the transformation matrix that displays movement
 
 #### Big Sphere
 This [video](https://github.com/maxschommer/SoftSys_Terminally_Eeeel/blob/master/Work_in_Progress/Video7/sick_rays.gif)
-is similar to the previous one, but is zoomed in to make the sphere larger.
+is similar to the previous one, but is zoomed in to make the sphere larger, and illustrates the closer proximity of the light source.
 
 # Next Steps
 If we were to continue this project, we would have implemented linear interpolation and recursion to be able to better implement curves around rounded objects. We also expect to implement refraction and shading to our ray tracer in future work. 
