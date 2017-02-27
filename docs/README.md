@@ -49,4 +49,4 @@ Rotates a sphere, demonstrating the transformation matrix that displays movement
 Similar to the previous one, but zoomed in to make the sphere larger, and illustrates the closer proximity of the light source.
 
 # Next Steps
-If we were to continue this project, we would have implemented linear interpolation and recursion to be able to better implement curves around rounded objects. We also expect to implement refraction and shading to our ray tracer in future work. 
+If we were to continue this project, we would have implemented linear interpolation and recursion to be able to better implement curves around rounded objects. Recursion would have allowed us to also include mirror reflection in our model. We also expect to implement refraction and shading to our ray tracer in future work. 
