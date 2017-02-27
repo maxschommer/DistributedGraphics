@@ -1,18 +1,21 @@
 # Sick Rays
 
 ## Description
-We Implemented a ray tracer in C. We simulated light particles bouncing off an STL object with material properties in order to create a rendered, realistic image of that object. We created beautiful images of STLs using our ray tracer, and can do the same for any STL imputed into the program. 
+We Implemented a ray tracer in C. We simulated light particles bouncing off an STL object with material properties in order to create a rendered, realistic image of that object. We created beautiful images of STLs using our ray tracer, and can do the same for any STL imputed into the program. Learn more about our project at our [project site](https://maxschommer.github.io/SoftSys_Terminally_Eeeel).
 
 ## Authors
 * [Max Schommer](http://www.maxschommer.com/)
 * [Jeremy Garcia](https://github.com/jag-123)
-* [Rachel Yang](rachelyang02.github.io)
+* [Rachel Yang](http://rachelyang02.github.io)
 * [Bill Du](https://github.com/DHZBill)
 
 ## Getting Started 
+Download the finals folder and compile the program by running `make`.
 
 ## Usage
 The STL files used must have ASCII STL format.
+
+The output from our ray tracer will be a series of .ppm files, which can then be compiled into a video by running `convert image*ppm sick_rays.gif` while inside the same folder as the images. You can also follow [this process](http://jupiter.ethz.ch/~pjt/makingMovies.html) to compile the .ppm files into a video.
 
 ## License
 MIT License
