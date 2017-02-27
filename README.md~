@@ -1,26 +1,23 @@
 # Sick Rays
 
 ## Description
-We desire to create a rendering environment using C. We will implement a version of ray tracing using copious amounts of linear algebra and the power of STLs (STereoLithography files that define a triangulated surface by unit normals and vertices), and create beautiful images of spheres, bunnies, teapots and other objects.
-
-At a minimum, we desire to implement ray tracing for a sphere, and output a rendered image of that sphere with one layer of reflection. This will require detecting where the ray intersects the sphere, calculating the reflected ray, and calculating the light source that the reflected ray hits.
-
-For a stretch goal, we want to implement a video rendering of STLs and spheres that uses recursion to back-propagate the ray’s path as it reflects and refracts off of the objects in the video. With this, we would also like to implement color rendering, full STL rendering, and custom environments. Our definition of full video capability, includes turntable renders and camera path linear (and possibly polynomial) interpolation..
+We Implemented a ray tracer in C. We simulated light particles bouncing off an STL object with material properties in order to create a rendered, realistic image of that object. We created beautiful images of STLs using our ray tracer, and can do the same for any STL imputed into the program. 
 
 ## Authors
-[Max Schommer](http://www.maxschommer.com/)
-[Jeremy Garcia](https://github.com/jag-123)
-[Rachel Yang](rachelyang02.github.io)
-[Bill Du](https://github.com/DHZBill)
+* [Max Schommer](http://www.maxschommer.com/)
+* [Jeremy Garcia](https://github.com/jag-123)
+* [Rachel Yang](rachelyang02.github.io)
+* [Bill Du](https://github.com/DHZBill)
 
 ## Getting Started 
 
 ## Usage
+The STL files used must have ASCII STL format.
 
 ## License
 MIT License
 
-Copyright (c) [year] [fullname]
+Copyright (c) 2017 SoftsysTerminallyEeeel
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
