@@ -12,25 +12,15 @@ In order to do ray tracing, quite a bit of linear algebra is needed. We wrote al
 # Results
 We will include 2-3 videos of our ray tracer. These videos represent our best attempts at generating 3D images with a given light source from input stl files. 
 
-## Fragmentation
-This [video](https://github.com/maxschommer/SoftSys_Terminally_Eeeel/blob/master/Work_in_Progress/Video4/a_bit_less_sad_rays.gif)
-is a rendering of a sphere splitting apart.
+## [Fragmentation](https://github.com/maxschommer/SoftSys_Terminally_Eeeel/blob/master/Work_in_Progress/Video4/a_bit_less_sad_rays.gif) is a rendering of a sphere splitting apart.
 
-## Fragmentation Pt. II
-This [video](https://github.com/maxschommer/SoftSys_Terminally_Eeeel/blob/master/Work_in_Progress/Video5/diseased_rays.gif)
-is similar to the previous video but at a higher and more destructive decay rate.
+## [Fragmentation Pt. II](https://github.com/maxschommer/SoftSys_Terminally_Eeeel/blob/master/Work_in_Progress/Video5/diseased_rays.gif) is similar to the previous video but at a higher and more destructive decay rate.
 
-## Morning Rays
-This [video](https://github.com/maxschommer/SoftSys_Terminally_Eeeel/blob/master/Work_in_Progress/Video1/morning_rays.gif)
-showcases the upwards movement of the light source, imitating a rising sun.
+## [Morning Rays](https://github.com/maxschommer/SoftSys_Terminally_Eeeel/blob/master/Work_in_Progress/Video1/morning_rays.gif) showcases the upwards movement of the light source, imitating a rising sun.
 
-## Sphere
-This [video](https://github.com/maxschommer/SoftSys_Terminally_Eeeel/blob/master/Work_in_Progress/Video6/moviefast.gif)
-rotates a sphere, demonstrating the transformation matrix that displays movement of the light source.
+## [Sphere](https://github.com/maxschommer/SoftSys_Terminally_Eeeel/blob/master/Work_in_Progress/Video6/moviefast.gif) rotates a sphere, demonstrating the transformation matrix that displays movement of the light source.
 
-## Big Sphere
-This [video](https://github.com/maxschommer/SoftSys_Terminally_Eeeel/blob/master/Work_in_Progress/Video7/sick_rays.gif)
-is similar to the previous one, but is zoomed in to make the sphere larger, and illustrates the closer proximity of the light source.
+## [Big Sphere](https://github.com/maxschommer/SoftSys_Terminally_Eeeel/blob/master/Work_in_Progress/Video7/sick_rays.gif)is similar to the previous one, but is zoomed in to make the sphere larger, and illustrates the closer proximity of the light source.
 
 # Next Steps
 If we were to continue this project, we would have implemented linear interpolation and recursion to be able to better implement curves around rounded objects. We also expect to implement refraction and shading to our ray tracer in future work. 
