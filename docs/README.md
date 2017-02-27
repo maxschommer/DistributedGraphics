@@ -11,3 +11,6 @@ In order to do ray tracing, quite a bit of linear algebra is needed. We wrote al
 
 # Results
 We will include 2-3 videos of our ray tracer. These videos represent our best attempts at generating 3D images with a given light source from input stl files. 
+
+# Next Steps
+If we were to continue this project, we would have implemented linear interpolation and recursion to be able to better implement curves around rounded objects. We also expect to implement refraction and shading to our ray tracer in future work. 
