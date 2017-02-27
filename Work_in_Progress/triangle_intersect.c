@@ -140,12 +140,11 @@ vector rot_point(vector r, vector o, float angle){
     result.y = 0;
     result.z = 0;
     // angle = 0;
-    vector otemp = {5,0,0};
-    temp = vecSub(&r, &otemp);
+    temp = vecSub(&r, &o);
 
     temp2 = z_rot(temp, angle);
 
-    result = vecSum(&otemp, &temp2);
+    result = vecSum(&o, &temp2);
 
     //result = z_rot(r, angle);
     // printf("rot_point: %f, %f, %f\n", result.x, .y, temp.z);
@@ -164,7 +163,7 @@ void rot_object(triray *m, vector o, float angle){
     temp2.y = 0;
     temp2.z = 0;
 
-    printf("\n");
+    
     for (int i = 0; i < m->length; ++i)
     {
         temp.x = m->triangles[i][0][0];
@@ -496,7 +495,6 @@ float AccLightSource(vector *q, ray *v, triray *stl, int index){
     vector rdir = vecSub(&light.point, &r.start);
     r.dir = rdir;
     r.dir = vecNorm(&r.dir);
-    // printf("Normal Tri: %f, %f, %f\n", r.start.x, r.start.y, r.start.z);
 	hit_tri w = Intersect(r, *stl);
 
     //printf("wFLAG = %d \n", w.FLAG);
@@ -531,16 +529,11 @@ float AccLightSource(vector *q, ray *v, triray *stl, int index){
         {
             color += fabs(diff_int);
         }
-        //printf("%f\n",RdotV);
         if (spec_int > 0)
         {
             color += spec_int;
         }
-        //printf("color: %f\n", color );
-        
-	// }else{
- //        color = 0;
-        // color = 200;
+
     }
     color += ia*ka;
 	//End the for loop
@@ -603,15 +596,30 @@ void writePPM(const char *filename, unsigned char myimg[HEIGHT][WIDTH][3], int w
     fclose(fp);
 }
 
-void printPoint(float *v){
-    printf("(x, y, z) = (%f, %f, %f)", v[0], v[1], v[2]);
+void printProg(float progress, int images){
+    int barWidth = 70;
+
+    printf("Rendering: [");
+    int pos = barWidth * progress;
+    for (int p = 0; p < barWidth; ++p) {
+        if (p < pos){
+            printf("=");
+        }else if (p == pos) {
+            printf(">");
+        }
+        else printf(" ");
+    }
+    int print_prog = progress * 100.0;
+    printf("] %d%% \r", print_prog);
+    fflush(stdout);
 }
+
 
 int main(int argc, char *argv[])
 {
-	light.point.x = 2;
+	light.point.x = -1;
 	light.point.y = 0;
-	light.point.z = 1;
+	light.point.z = 2;
 	light.diff_int = 600;
     light.spec_int = 2400;
 
@@ -639,10 +647,13 @@ int main(int argc, char *argv[])
     triray stl;
 
     stl = search_for_vertex(argv[1]);
-
-    for (int i = 0; i < 200; ++i)
+    int images = 100;
+    float progress = 0.0;
+    for (int i = 0; i < images; ++i)
     {
-        
+        progress = 1.0*i/images;
+        printProg(progress, i);
+
         int y,z;
 
         unsigned char img[HEIGHT][WIDTH][3];
@@ -652,12 +663,12 @@ int main(int argc, char *argv[])
         
         for (z=0;z<HEIGHT;z++){
             zf = z;
-            r.dir.z = ((zf-HEIGHT/2)/HEIGHT) * 6;
+            r.dir.z = ((zf-HEIGHT/2)/HEIGHT) * 12;
             for (y=0;y<WIDTH;y++){
                 // Iterate over the pixels of the image
 
                 yf = y;
-                r.dir.y = ((yf-WIDTH/2)/WIDTH) * 6;
+                r.dir.y = ((yf-WIDTH/2)/WIDTH) * 12;
 
                 float red = Trace(&r, 0, &stl);
 
@@ -677,15 +688,16 @@ int main(int argc, char *argv[])
         writePPM(str, img,WIDTH,HEIGHT);
 
         vector o = {5,0,0};
-        float angle = 2.0*3.14159/200;
+        float angle = 3.14159/100/4;
         rot_object(&stl, o, angle);
        // prints out content of 3d array
-        for (int i=0;i<2;i++){
-            for(int j=0;j<4;j++){
-                printf("Triangles: %f, %f, %f\n", stl.triangles[i][j][0], stl.triangles[i][j][1], stl.triangles[i][j][2]);
-            } 
-            printf("%d\n",i);
-        }
+        // for (int i=0;i<2;i++){
+        //     for(int j=0;j<4;j++){
+        //         printf("Triangles: %f, %f, %f\n", stl.triangles[i][j][0], stl.triangles[i][j][1], stl.triangles[i][j][2]);
+        //     } 
+        //     printf("%d\n",i);
+        // }
     }
+    
     return 0;
 }

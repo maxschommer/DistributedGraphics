@@ -150,7 +150,6 @@ triray search_for_vertex(char *fname) {
 	triray object;
 	object.triangles = numbers;
 	object.length = xlen;
-	printf("%d\n",object.length);
 
    	return(object);
 }
