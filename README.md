@@ -10,7 +10,7 @@ We Implemented a ray tracer in C. We simulated light particles bouncing off an S
 * [Bill Du](https://github.com/DHZBill)
 
 ## Getting Started 
-Download the finals folder and compile the Makefile by running `blah`.
+Download the finals folder and compile the program by running `make`.
 
 ## Usage
 The STL files used must have ASCII STL format.
