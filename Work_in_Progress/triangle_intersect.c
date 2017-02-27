@@ -67,7 +67,6 @@ triangle tri_init(triray* m, int i){
     t.p3.x = m->triangles[i][3][0];
     t.p3.y = m->triangles[i][3][1];
     t.p3.z = m->triangles[i][3][2];
-    //printf("%f, %f, %f\n",t.p3.x, t.p3.y, t.p3.z );
     return t;
 }
 
@@ -105,9 +104,6 @@ vector z_rot(vector v, float angle){
     result.y = sin(angle) * (v.x) + cos(angle) * (v.y);
     result.z = v.z;
 
-    // printf("z_rot temp: %f, %f, %f\n", v.x, v.y, v.z);
-    // printf("z_rot resu: %f, %f, %f\n", result.x, result.y, result.z);
-    // exit(0);
     return result;
 }
 
@@ -139,16 +135,13 @@ vector rot_point(vector r, vector o, float angle){
     result.x = 0;
     result.y = 0;
     result.z = 0;
-    // angle = 0;
+
     temp = vecSub(&r, &o);
 
     temp2 = z_rot(temp, angle);
 
     result = vecSum(&o, &temp2);
 
-    //result = z_rot(r, angle);
-    // printf("rot_point: %f, %f, %f\n", result.x, .y, temp.z);
-    // exit(0);
     return result;
 }
 
@@ -209,13 +202,11 @@ vector vecNorm(vector *v){
 
 /*Returns the crossproduct u x v for two vectors
 u and v.*/
-//TODO
 vector crossProduct(vector *u, vector *v){
     vector result;
     result.x = u->y * v->z - u->z * v->y;
     result.y = u->z * v->x - u->x * v->z;
     result.z = u->x * v->y - u->y * v->x;
-    //printf("from crossproduct: %f\n", result);
     return result;
 }
 
@@ -235,11 +226,6 @@ We define v1 as p3-p1, and v2 as p2-p1. We
 take the cross product of these (v1 x v2) and normalize
 in order to find the unit normal.*/
 vector triangleNormal(triangle *tri){
-    // vector v1 = vecSub(&tri->p3, &tri->p1);
-    // vector v2 = vecSub(&tri->p2, &tri->p1);
-    // vector cross = crossProduct(&v1, &v2);
-    // vector result = vecNorm(&cross);
-    // return result;
     return tri->normal;
 }
 
@@ -280,7 +266,6 @@ int find_minimum(float a[], int n) {
             min = a[c];
         }
     }
-
     return index;
 }
 
@@ -309,7 +294,6 @@ hit_tri planeIntersect(triangle *tri, ray *r){
     result.point = vecSum(&v1, &v2);
     result.FLAG = 1;
     result.normal = tri->normal;
-    //printf("Normal: %f, %f, %f, \n",result.normal.x,  result.normal.y, result.normal.z);
     return result;
 }
 
@@ -361,7 +345,7 @@ when function is verified to work, and
 the function should act on a global 
 collection of triangles called an object*/
 hit_tri Intersect(ray r, triray m){
-    //printf("Length: %d\n", m->length);
+
 
     int hit_array[m.length];
     float hit_dist[m.length]; //This is the distance of the hit point to the camera.
@@ -379,7 +363,6 @@ hit_tri Intersect(ray r, triray m){
     find_intersect.FLAG = 0;
     find_intersect.index = 0;
 
-    //printf("%f, %f, %f\n",find_intersect.normal.x, find_intersect.normal.y, find_intersect.normal.z );
     vector camera;
     camera.x = 0;
     camera.y = 0;
@@ -391,18 +374,14 @@ hit_tri Intersect(ray r, triray m){
         
         find_intersect = planeIntersect(&t, &r);
 
-        //printf("%f, %f, %f\n",find_intersect.point.x, find_intersect.point.y, find_intersect.point.z );
         if ((find_intersect.FLAG) && (inTri(&t,&find_intersect.point))){
-            //printf("%f, %f, %f\n",find_intersect.point.x, find_intersect.point.y, find_intersect.point.z );
-            //printf("Intersect Flag: %d\n", find_intersect.FLAG);
             find_intersect.FLAG = 1;
             hit_array[i] = 1;
             hit_dist[i] = distance(&find_intersect.point, &camera);
-            //printf("Distance: %f\n", hit_dist[i]);
+
             
 
         }else{
-            //printf("1\n");
             find_intersect.FLAG = 0;
             hit_array[i] = 0;
             hit_dist[i] = 100;
@@ -412,7 +391,6 @@ hit_tri Intersect(ray r, triray m){
 
     for (int j = 0; j < m.length; ++j)
     {
-        //printf("%.02f, ", hit_dist[j]);
         if (hit_array[j] == 1)
         {
             
@@ -420,8 +398,6 @@ hit_tri Intersect(ray r, triray m){
         }
     }
 
-    //printf("\n");
-    //printf("Hillow\n");
     if (isHit) //Checks if any triangle has been hit.
     {
         int min = find_minimum(hit_dist, m.length);
@@ -430,13 +406,8 @@ hit_tri Intersect(ray r, triray m){
         find_intersect = planeIntersect(&result, &r);
         find_intersect.FLAG = 1;
         find_intersect.index = min;
-
-        //printf("Find Intersect Index: %f\n", hit_dist[2]);
-        //printf("Intersect: %f, %f, %f\n", find_intersect.point.x, find_intersect.point.y, find_intersect.point.z);
     }
 
-    //printf("Find Intersect %d\n", find_intersect.FLAG);
-    // printf("\n");
     return find_intersect;
 
 }
@@ -497,7 +468,6 @@ float AccLightSource(vector *q, ray *v, triray *stl, int index){
     r.dir = vecNorm(&r.dir);
 	hit_tri w = Intersect(r, *stl);
 
-    //printf("wFLAG = %d \n", w.FLAG);
 	//This checks if the ray intersects
 	//something before hitting a light source.
 
@@ -509,13 +479,11 @@ float AccLightSource(vector *q, ray *v, triray *stl, int index){
 								       //light source.
         triangle normal_tri = tri_init(stl, index);
 		vector Nhat = triangleNormal(&normal_tri);//Normal of triangle
-        //printf("Normal Tri: %f, %f, %f\n", Nhat.x, Nhat.y, Nhat.z);
         
 		float light_intensity_diff = 1 / distance(q, &light.point) * light.diff_int; //Use point source light definition
                                                                                      //for distance dropout
 		float diff_int =  dotProduct(&Lhat, &Nhat) * kd * light_intensity_diff;  //Diffusion Intensity
         float ks = .7;
-        //printf("Color: %f\n", dotProduct(&Lhat, &Nhat));
         ray V = reflectedRay(&view, &Nhat, q);//Viewer ray
         V.dir = vecNorm(&V.dir);
         ray R = reflectedRay(&r, &Nhat, q);//Perfectly reflected light ray
@@ -557,16 +525,8 @@ float Trace(ray *r, int depth, triray *stl){
 	//This is the color of the pixel in intensity  for one 
 	//color chanel (RGB)
 	float color;
-    //printf("Hi\n");
-    // if (q.point.x > 3)
-    // {
-    //     printf("Intersect_Point = %f, %f, %f\n", q.point.x, q.point.y, q.point.z);
 
-    // }
-
-    //printf("R : %f, %f, %f\n", r->dir.x, r->dir.y, r->dir.z);
 	color = AccLightSource(&q.point, r, stl, q.index);
-	//printf("color = :%f\n", color);
 	//Reflection and refraction recursion starts here
 	return color;
 }
@@ -623,18 +583,6 @@ int main(int argc, char *argv[])
 	light.diff_int = 600;
     light.spec_int = 2400;
 
-	// tglobal.p1.x = 3; //Triangle is parallel to the yz plane, and is isoceles.
-	// tglobal.p1.y = 3;
-	// tglobal.p1.z = -3;
-
-	// tglobal.p2.x = 3;
-	// tglobal.p2.y = -3;
-	// tglobal.p2.z = -3;
-
-	// tglobal.p3.x = 3;
-	// tglobal.p3.y = 0;
-	// tglobal.p3.z = 4;
-
     ray r;
     r.start.x = 0;
     r.start.y = 0;
@@ -676,7 +624,6 @@ int main(int argc, char *argv[])
                 {
                     red = 255.0;
                 }
-                //printf("Hi\n");
                 img[HEIGHT-z-1][y][0] = red;
                 img[HEIGHT-z-1][y][1] = 0;
                 img[HEIGHT-z-1][y][2] = 0;
@@ -690,14 +637,8 @@ int main(int argc, char *argv[])
         vector o = {5,0,0};
         float angle = 3.14159/100/4;
         rot_object(&stl, o, angle);
-       // prints out content of 3d array
-        // for (int i=0;i<2;i++){
-        //     for(int j=0;j<4;j++){
-        //         printf("Triangles: %f, %f, %f\n", stl.triangles[i][j][0], stl.triangles[i][j][1], stl.triangles[i][j][2]);
-        //     } 
-        //     printf("%d\n",i);
-        // }
+
     }
-    
+
     return 0;
 }
