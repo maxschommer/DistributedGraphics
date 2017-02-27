@@ -10,11 +10,10 @@ We Implemented a ray tracer in C. We simulated light particles bouncing off an S
 * [Bill Du](https://github.com/DHZBill)
 
 ## Getting Started 
+Download the finals folder and compile the Makefile by running `blah`.
 
 ## Usage
 The STL files used must have ASCII STL format.
-
-Download the finals folder and compile the Makefile by running `blah`.
 
 The output from our ray tracer will be a series of .ppm files, which can then be compiled into a video by running `convert image*ppm sick_rays.gif` while inside the same folder as the images. You can also follow [this process](http://jupiter.ethz.ch/~pjt/makingMovies.html) to compile the .ppm files into a video.
 
