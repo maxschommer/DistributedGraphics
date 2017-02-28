@@ -4,7 +4,16 @@
 #include <regex.h>
 #include <errno.h>
 #include <time.h>
+/*
+This file parses an ASCII stl file and adds the normals and points of a triangle
+to a 3-d array. The function search_for_vertex takes an ASCII stl file as input, 
+but in the main file this should be a command line (argv) input.
+*/
 
+/*
+struct that takes the length of the array 
+and the 3-d array itself
+*/
 typedef struct 
 {
 	int length;
@@ -12,6 +21,9 @@ typedef struct
 }triray;
 
 //http://stackoverflow.com/questions/2306172/malloc-a-3-dimensional-array-in-c
+/*
+frees data from a 3-d array
+*/
 void free_data(float ***data, size_t xlen, size_t ylen)
 {
     size_t i, j;
@@ -27,6 +39,9 @@ void free_data(float ***data, size_t xlen, size_t ylen)
 }
 
 //http://stackoverflow.com/questions/2306172/malloc-a-3-dimensional-array-in-c
+/*
+allocates data for a 3-d array
+*/
 float ***alloc_data(size_t xlen, size_t ylen, size_t zlen)
 {
     float ***p;
@@ -61,7 +76,12 @@ float ***alloc_data(size_t xlen, size_t ylen, size_t zlen)
     return p;
 }
 
-//parses a file line by line and adds points to 3d array if line contains the string "vertex"
+/*
+parses a file line by line and adds points to 3d array if line 
+contains the string "vertex". if line contains the string "normal"
+adds the normal vector to the 3-d array as well.
+The input file should be an ASCII stl file.
+*/
 triray search_for_vertex(char *fname) {
 	FILE *fp;
 	int line_num = 1;
@@ -105,13 +125,11 @@ triray search_for_vertex(char *fname) {
 
 			char g[10];
 
+			//adds triangles to the 3d array
 			sscanf(temp,"%s %f %f %f",g, &numbers[i][j][0], &numbers[i][j][1], &numbers[i][j][2]);
-			// printf("%s\n", temp);
-			// printf("%f %f %f\n", numbers[i][j][0], numbers[i][j][1], numbers[i][j][2]);
 				j++;
 				if (j==4){
 					i++;
-					//printf("\n");
 					j=0;
 
 				}
@@ -125,12 +143,12 @@ triray search_for_vertex(char *fname) {
 			char g[40];
 			char d[10];
 
+			//adds the normals to the 3-d array
 			sscanf(temp,"%s %s %f %f %f",g, d, &numbers[i][j][0], &numbers[i][j][1], &numbers[i][j][2]);
 			
 				j++;
 				if (j==4){
 					i++;
-					//printf("\n");
 					j=0;
 
 				}
@@ -153,25 +171,3 @@ triray search_for_vertex(char *fname) {
 
    	return(object);
 }
-
-// int main(int argc, char *argv[]) {
-// 	float*** result;
-// 	int errno;
-
-// 	//Use system("cls") on windows
-// 	//Use system("clear") on Unix/Linux
-// 	system("clear");
-
-// 	result = search_for_vertex(argv[1]);
-
-// 	//prints out content of 3d array
-// 	// int i,j;
-// 	// for (i=0;i<96;i++){
-// 	// 	for(j=0;j<3;j++){
-// 	// 		printf("%f %f %f\n", result[i][j][0], result[i][j][1], result[i][j][2]);
-// 	// 	}
-// 	// 	printf("%d\n",i);
-// 	// }
-
-// 	return(0);
-// }
