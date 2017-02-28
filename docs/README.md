@@ -19,6 +19,7 @@ By doing this, we are able to see if a given ray hits a triangle. If it does, th
 The following videos (linked in yellow) are outputted from our ray tracer. These videos represent our best attempts at generating 3D images with a given light source from input stl files. 
 
 ### Fragmentation
+![Fragmentation](docs/images/bigsphere.png)
 [video](https://github.com/maxschommer/SoftSys_Terminally_Eeeel/blob/master/Work_in_Progress/Video4/a_bit_less_sad_rays.gif)
 
 A rendering of a sphere splitting apart.
