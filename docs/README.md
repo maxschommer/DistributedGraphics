@@ -19,31 +19,26 @@ By doing this, we are able to see if a given ray hits a triangle. If it does, th
 The following videos (linked in yellow) are outputted from our ray tracer. These videos represent our best attempts at generating 3D images with a given light source from input stl files. 
 
 ### Fragmentation
-![Fragmentation](SoftSys_Terminally_Eeeel/docs/images/bigsphere.png) 
 [video](https://github.com/maxschommer/SoftSys_Terminally_Eeeel/blob/master/Work_in_Progress/Video4/a_bit_less_sad_rays.gif)
 
 A rendering of a sphere splitting apart.
 
 ### Fragmentation Pt. II
-![Fragmentation Pt. II](https://github.com/maxschommer/SoftSys_Terminally_Eeeel/blob/master/docs/images/frag2.png) 
 [video](https://github.com/maxschommer/SoftSys_Terminally_Eeeel/blob/master/Work_in_Progress/Video5/diseased_rays.gif) 
 
 Similar to the previous video, but at a higher and more destructive decay rate.
 
 ### Morning Rays
-![Morning Rays](https://github.com/maxschommer/SoftSys_Terminally_Eeeel/blob/master/Work_in_Progress/Video1/morning_rays.gif)
 [video](https://github.com/maxschommer/SoftSys_Terminally_Eeeel/blob/master/Work_in_Progress/Video1/morning_rays.gif)
 
 Showcases the upwards movement of the light source, imitating a rising sun.
 
 ### Sphere 
-![Sphere](https://github.com/maxschommer/SoftSys_Terminally_Eeeel/blob/master/docs/images/sphere.png) 
 [video](https://github.com/maxschommer/SoftSys_Terminally_Eeeel/blob/master/Work_in_Progress/Video6/moviefast.gif)
 
 Rotates a sphere, demonstrating the transformation matrix that displays movement of the light source.
 
 ### Big Sphere
-![Big Sphere](https://github.com/maxschommer/SoftSys_Terminally_Eeeel/blob/master/docs/images/bigsphere.png)
 [video](https://github.com/maxschommer/SoftSys_Terminally_Eeeel/blob/master/Work_in_Progress/Video7/sick_rays.gif)
 
 Similar to the previous one, but zoomed in to make the sphere larger, and illustrates the closer proximity of the light source.
