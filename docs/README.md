@@ -43,29 +43,21 @@ Finally, after the scene is rendered, we created the ability to create turntable
 The following videos (linked in yellow) are outputted from our ray tracer. These videos represent our best attempts at generating 3D images with a given light source from input stl files. 
 
 ### Fragmentation
-[video](https://github.com/maxschommer/SoftSys_Terminally_Eeeel/blob/master/Work_in_Progress/Video4/a_bit_less_sad_rays.gif)
+[video](https://github.com/maxschommer/SoftSys_Terminally_Eeeel/blob/master/Work_in_Progress/Video5/diseased_rays.gif) 
 
 A rendering of a sphere splitting apart.
 
-### Fragmentation Pt. II
-[video](https://github.com/maxschommer/SoftSys_Terminally_Eeeel/blob/master/Work_in_Progress/Video5/diseased_rays.gif) 
+### Dragon
+[video](https://github.com/maxschommer/SoftSys_Terminally_Eeeel/blob/master/Work_in_Progress/dragon.gif)
 
-Similar to the previous video, but at a higher and more destructive decay rate.
+Showcases a pair of dragons.
 
-### Morning Rays
-[video](https://github.com/maxschommer/SoftSys_Terminally_Eeeel/blob/master/Work_in_Progress/Video1/morning_rays.gif)
+### Teapot 
+[video](https://github.com/maxschommer/SoftSys_Terminally_Eeeel/blob/master/Work_in_Progress/teapot.gif)
 
-Showcases the upwards movement of the light source, imitating a rising sun.
+Rotates a beautiful teapot.
 
-### Sphere 
-[video](https://github.com/maxschommer/SoftSys_Terminally_Eeeel/blob/master/Work_in_Progress/Video6/moviefast.gif)
 
-Rotates a sphere, demonstrating the transformation matrix that displays movement of the light source.
-
-### Big Sphere
-[video](https://github.com/maxschommer/SoftSys_Terminally_Eeeel/blob/master/Work_in_Progress/Video7/sick_rays.gif)
-
-Similar to the previous one, but zoomed in to make the sphere larger, and illustrates the closer proximity of the light source.
 
 # Performance
 The majority of the time the ray tracer spends is calculating intersections between a ray and all of the triangles. Because we use a brute force approach, that leads to a O(n2) where n is the number of triangles in the STL. This is because for each ray fired from the camera, we have to calculate the intersection with every triangle in the object. Then, for every ray that hit the object, we have to calculate the intersection of the ray from the object to every light source, which we had one of. Adding recursion to this process would increase the power dramatically. Ray tracing can very quickly become an extremely long process, especially for complicated STLs. 
