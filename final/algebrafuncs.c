@@ -51,7 +51,7 @@ vector vecSum(vector *v1, vector *v2){
 }
 
 /*This rotates a vector v in 3d space around the z 
-axis by a float angle.
+axis by a float angle given in radians.
 It returns a vector*/
 vector z_rot(vector v, float angle){
     vector result;
@@ -65,8 +65,10 @@ vector z_rot(vector v, float angle){
     return result;
 }
 
-/*Rotate a vector r around z direction around
-a point in space on the xy plane*/
+/*Rotate a vector r in the z direction around
+a point in space o on the xy plane. The float angle
+is input in radians.
+It returns a vector*/
 vector rot_point(vector r, vector o, float angle){
     vector temp;
     temp.x = 0;
@@ -91,7 +93,8 @@ vector rot_point(vector r, vector o, float angle){
     return result;
 }
 
-/*Scales a vector by a float constant*/
+/*Scales a vector by a float constant
+It returns a vector*/
 vector vecScale(vector *v, float *d){
     vector result = {(v->x )* *d, (v->y) * *d, (v->z) * *d};
     return result;

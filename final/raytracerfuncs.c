@@ -31,6 +31,10 @@ hit_tri planeIntersect(triangle *tri, ray *r){
     return result;
 }
 
+/*Initializes a triangle object from 
+a 3d array of floats given the index
+i of the array and an array object
+triray m. Returns a triangle.*/
 triangle tri_init(triray* m, int i){
     triangle t;
 
@@ -53,7 +57,13 @@ triangle tri_init(triray* m, int i){
     return t;
 }
 
-/*Rotates an STL around a z axis based on a point*/
+/*Rotates an STL represented by a triray m
+in the z direction, where the rotation is centered
+around a point vector o. This rotates the normals
+differently, simply rotating them about the z axis
+The angle is input as float angle in radians. 
+This modifies the original STL object, and returns 
+nothing*/
 void rot_object(triray *m, vector o, float angle){
     vector temp;
     temp.x = 0;
@@ -64,9 +74,10 @@ void rot_object(triray *m, vector o, float angle){
     temp2.y = 0;
     temp2.z = 0;
 
-    
+    //Indexes through the STL.
     for (int i = 0; i < m->length; ++i)
     {
+        //Rotates the normal of the triangle
         temp.x = m->triangles[i][0][0];
         temp.y = m->triangles[i][0][1];
         temp.z = m->triangles[i][0][2];
@@ -77,9 +88,11 @@ void rot_object(triray *m, vector o, float angle){
         m->triangles[i][0][1] = temp2.y;
         m->triangles[i][0][2] = temp2.z;
 
+        //Rotates the points of the triangle
+        //around a point o
         for (int j = 1; j < 4; ++j)
         {
-            
+        
             temp.x = m->triangles[i][j][0];
             temp.y = m->triangles[i][j][1];
             temp.z = m->triangles[i][j][2];
@@ -95,7 +108,8 @@ void rot_object(triray *m, vector o, float angle){
 
 }
 
-/*Returns the index of the minimum, non-zero value in an array.*/
+/*Returns the int index of the minimum, non-zero
+value in a float array.*/
 int find_minimum(float a[], int n) {
     float min = 0;
     int index = 0 ;
@@ -111,10 +125,11 @@ int find_minimum(float a[], int n) {
     return index;
 }
 
-/*Checks to see if point of intersection lies within the
+/*Checks to see if the point of intersection of the
+plane of the triangle and the ray lies within the
 bounds of the triangle
 
-Returns true or false*/
+Returns and int, true or false, 1 = true, 0 = false*/
 int inTri(triangle *t, vector *p){
     // define vectors from point to point of triangle
     // to define triangle boundaries
@@ -176,6 +191,8 @@ void writePPM(const char *filename, unsigned char myimg[HEIGHT][WIDTH][3], int w
     fclose(fp);
 }
 
+/*Prints a progress bar for rendering a 
+video*/
 void printProg(float progress, int images){
     int barWidth = 70;
 
@@ -195,12 +212,12 @@ void printProg(float progress, int images){
 }
 
 /*Returns the point of intersection between 
-a ray and the nearest object (just one triangle
-for now). Otherwise, it returns None. 
-The inputed triangle should be removed
-when function is verified to work, and
-the function should act on a global 
-collection of triangles called an object*/
+a ray and the nearest triangle in the STL. 
+The point is represented by hit_tri.point
+Wheather the ray intersected or not is represented by 
+hit_tri.FLAG. The normal of the triangle that was 
+hit is given by hit_tri.normal. The index of the triangle
+that was hit is given by hit_tri. */
 hit_tri Intersect(ray r, triray m){
 
 
@@ -330,16 +347,21 @@ float AccLightSource(vector *q, ray *v, triray *stl, int index){
 
     if (w.FLAG == 0)
     { 
+        //Diffusion
         float kd = .5; //Diffusion/reflection constant
-         
+        
+
         vector Lhat = r.dir;
                                        //light source.
         triangle normal_tri = tri_init(stl, index);
         vector Nhat = triangleNormal(&normal_tri);//Normal of triangle
         
+
         float light_intensity_diff = 1 / distance(q, &light.point) * light.diff_int; //Use point source light definition
                                                                                      //for distance dropout
         float diff_int =  dotProduct(&Lhat, &Nhat) * kd * light_intensity_diff;  //Diffusion Intensity
+
+        //Specular Highlights
         float ks = .7;
         ray V = reflectedRay(&view, &Nhat, q);//Viewer ray
         V.dir = vecNorm(&V.dir);
@@ -366,6 +388,8 @@ float AccLightSource(vector *q, ray *v, triray *stl, int index){
     return color;
 }
 
+/*Traces a ray, and returns the color of the pixel
+that the ray came from*/
 float Trace(ray *r, int depth, triray *stl){
     float ia = 30; //This needs to become global
     

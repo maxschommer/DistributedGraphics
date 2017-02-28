@@ -1,5 +1,5 @@
-/*Computes the location of the intersection between 
-a ray and a triangle*/
+/*Generates an image or series of images
+from an STL by implementing Ray tracing*/
 
 #include <stdio.h>
 #include <stdbool.h>
