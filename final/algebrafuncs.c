@@ -1,14 +1,33 @@
+/*
+This contains all of the linear algebraic functions
+used in the ray tracer.
+*/
+
+
 /*Returns a float that is the vector dot product
-of two vectors*/
+of two vectors, v1 and v2*/
 float dotProduct(vector *v1, vector *v2){
     return v1->x * v2->x + v1->y * v2->y + v1->z * v2->z;
 }
 
+/*Returns the determinant of a 2x2 matrix given by
+four inputs, a,b,c, and d. These correspond to the matrix
+    |a b|
+    |c d|
+
+*/
 float det2x2(float *a, float *b, float *c, float *d){
     float result = (*a)*(*d)-(*c)*(*b); //Dereference the pointers.
     return result;
 }
 
+/*This finds the determinant of a 3x3 matrix. It takes
+a triangle object, which contains three points, and 
+represents the matrix:
+|P1x P1y P1z|
+|P2x P2y P2z|
+|P3x P3y P3z|
+*/
 float det3x3(triangle *Mat){
     float det = 
         Mat->p1.x*(det2x2(&Mat->p2.y, &Mat->p2.z, &Mat->p3.y, &Mat->p3.z))-
@@ -17,18 +36,23 @@ float det3x3(triangle *Mat){
     return det;
 }
 
-//This subtracts vector 2 from vector 1. Ex. v1-v2 
+/*This subtracts vector 2 from vector 1. Ex. v1-v2
+It returns a vector.*/ 
 vector vecSub(vector *v1, vector *v2){
     vector result = {v1->x - v2->x, v1->y - v2->y, v1->z - v2->z};
     return result;
 }
 
-//This subtracts vector 2 from vector 1. Ex. v1-v2 
+/*This subtracts a vector 2 from a vector 1. Ex. v1-v2 
+It returns a vector*/
 vector vecSum(vector *v1, vector *v2){
     vector result = {v1->x + v2->x, v1->y + v2->y, v1->z + v2->z};
     return result;
 }
 
+/*This rotates a vector v in 3d space around the z 
+axis by a float angle.
+It returns a vector*/
 vector z_rot(vector v, float angle){
     vector result;
     result.x = 0;
@@ -41,7 +65,7 @@ vector z_rot(vector v, float angle){
     return result;
 }
 
-/*Rotate a vector in the z direction around
+/*Rotate a vector r around z direction around
 a point in space on the xy plane*/
 vector rot_point(vector r, vector o, float angle){
     vector temp;
@@ -67,7 +91,7 @@ vector rot_point(vector r, vector o, float angle){
     return result;
 }
 
-/*Scales a vector by a constant*/
+/*Scales a vector by a float constant*/
 vector vecScale(vector *v, float *d){
     vector result = {(v->x )* *d, (v->y) * *d, (v->z) * *d};
     return result;
@@ -80,7 +104,7 @@ vector vecNorm(vector *v){
     return result;
 }
 
-/*Returns the crossproduct u x v for two vectors
+/*Returns the vector crossproduct u x v for two vectors
 u and v.*/
 vector crossProduct(vector *u, vector *v){
     vector result;
@@ -93,25 +117,26 @@ vector crossProduct(vector *u, vector *v){
 /*This is used to calculate the intensity of
 light of a point source. It is the 
 distance function, and takes two vectors,
-and returns the distance between them*/
+and returns the float distance between them*/
 float distance(vector *u, vector *v){
     vector diff = vecSub(u, v);
     return sqrt(diff.x * diff.x + diff.y * diff.y + diff.z * diff.z);
 }
 
 /*Finds the normal of a triangle and returns
-a vector.
-
-We define v1 as p3-p1, and v2 as p2-p1. We
-take the cross product of these (v1 x v2) and normalize
-in order to find the unit normal.*/
+a vector.*/
 vector triangleNormal(triangle *tri){
     return tri->normal;
 }
 
-/*Uses a triangle as a three by three matrix, 
-where the rows are p1, p2, and p3. The collumns
-are x, y, z. */
+/*This finds the inverse of a 3x3 matrix. It takes
+a triangle object, which contains three points, and 
+represents the matrix:
+|P1x P1y P1z|
+|P2x P2y P2z|
+|P3x P3y P3z| 
+It returns a triangle object representing
+the matrix.*/
 triangle matInv(triangle *A){
     float aDet = det3x3(A);
 
