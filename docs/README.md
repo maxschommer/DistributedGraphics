@@ -31,7 +31,7 @@ A rendering of a sphere splitting apart.
 Similar to the previous video, but at a higher and more destructive decay rate.
 
 ### Morning Rays
-![Morning Rays](https://github.com/maxschommer/SoftSys_Terminally_Eeeel/blob/master/docs/images/morning.png)
+![Morning Rays](https://github.com/maxschommer/SoftSys_Terminally_Eeeel/blob/master/Work_in_Progress/Video1/morning_rays.gif)
 [video](https://github.com/maxschommer/SoftSys_Terminally_Eeeel/blob/master/Work_in_Progress/Video1/morning_rays.gif)
 
 Showcases the upwards movement of the light source, imitating a rising sun.
