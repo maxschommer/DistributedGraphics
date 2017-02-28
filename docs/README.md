@@ -11,15 +11,15 @@ In order to do ray tracing, quite a bit of linear algebra is needed. We wrote al
 
 We decided to ray trace STLs, because although the math to do this is more complex than spheres, it solves a much more general problem (you can render any object represented by an STL). An STL is composed of a series of triangles and their associated normals. The first step we took was to render a single triangle by ray tracing. We initially were unable to read STLs, and calculated the normal of a triangle by taking the cross product of two vectors that made up edges of a triangle. Eventually however, we created a function to parse ASCII STL files that have the following format where each n or v is a floating point number:
 
-    Facet normal ni nj nk
+    Facet normal Ni Nj Nk
 
 	    Outer loop
 	
-		    Vertex v1x v1y v1z
+		    Vertex V1x V1y V1z
 		
-		    Vertex v2x v2y v2z
+		    Vertex V2x V2y V2z
 		
-		    Vertex v3x v3y v3z
+		    Vertex V3x V3y V3z
 		
 	    Endloop
 	
