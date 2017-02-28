@@ -577,11 +577,11 @@ void printProg(float progress, int images){
 
 int main(int argc, char *argv[])
 {
-	light.point.x = -1;
+	light.point.x = 1;
 	light.point.y = 0;
 	light.point.z = 2;
-	light.diff_int = 600;
-    light.spec_int = 2400;
+	light.diff_int = 900;
+    light.spec_int = 3400;
 
     ray r;
     r.start.x = 0;
@@ -611,12 +611,12 @@ int main(int argc, char *argv[])
         
         for (z=0;z<HEIGHT;z++){
             zf = z;
-            r.dir.z = ((zf-HEIGHT/2)/HEIGHT) * 12;
+            r.dir.z = ((zf-HEIGHT/2)/HEIGHT) * 3;
             for (y=0;y<WIDTH;y++){
                 // Iterate over the pixels of the image
 
                 yf = y;
-                r.dir.y = ((yf-WIDTH/2)/WIDTH) * 12;
+                r.dir.y = ((yf-WIDTH/2)/WIDTH) * 3;
 
                 float red = Trace(&r, 0, &stl);
 
@@ -635,7 +635,7 @@ int main(int argc, char *argv[])
         writePPM(str, img,WIDTH,HEIGHT);
 
         vector o = {5,0,0};
-        float angle = 3.14159/100/4;
+        float angle = 2*3.14159/images;
         rot_object(&stl, o, angle);
 
     }
