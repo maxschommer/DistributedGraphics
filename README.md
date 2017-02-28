@@ -10,12 +10,12 @@ We Implemented a ray tracer in C. We simulated light particles bouncing off an S
 * [Bill Du](https://github.com/DHZBill)
 
 ## Getting Started 
-Download the finals folder and compile the program by running `make`.
+Download the folder called "final" and compile the program by running `make`.
 
 ## Usage
-The STL files used must have ASCII STL format.
+The makefile is taking the provided "sphere2.stl" as input. To use a different stl file, the "sphere2.stl" in the makefile needs to be replaced with another stl in the finals folder. All STL files used must have ASCII STL format.
 
-The output from our ray tracer will be a series of .ppm files, which can then be compiled into a video by running `convert image*ppm sick_rays.gif` while inside the same folder as the images. You can also follow [this process](http://jupiter.ethz.ch/~pjt/makingMovies.html) to compile the .ppm files into a video.
+The output from our ray tracer will be a series of .ppm files inside the folder called Images, which can then be compiled into a video by running `convert image*ppm sick_rays.gif` while inside the same folder as the images. You can also follow [this process](http://jupiter.ethz.ch/~pjt/makingMovies.html) to compile the .ppm files into a video.
 
 ## License
 MIT License
