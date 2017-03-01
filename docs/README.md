@@ -1,3 +1,9 @@
+## Authors
+* [Max Schommer](http://www.maxschommer.com/)
+* [Jeremy Garcia](https://github.com/jag-123)
+* [Rachel Yang](http://rachelyang02.github.io)
+* [Bill Du](https://github.com/DHZBill)
+
 # Abstract
 We implemented a ray tracer in C to create a rendered, realistic image of an object. By simulating light particles that bounce off an STL object with material properties, we created beautiful images of STLs using our ray tracer, and can do the same for any STL imputed into the program. View our code [here](https://github.com/maxschommer/SoftSys_Terminally_Eeeel).
 
